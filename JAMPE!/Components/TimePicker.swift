@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// Juan
 struct TimePicker: View{
     
     @State var hour: Int
