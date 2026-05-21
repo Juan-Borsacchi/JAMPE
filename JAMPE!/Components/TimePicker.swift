@@ -9,15 +9,12 @@ import SwiftUI
 
 // Juan
 struct TimePicker: View{
-    
-    @State var hour: Int
-    @State var minute: Int
-    
+    var style: AnyShapeStyle = .init(.bar)
+    @Binding var hour: Int
+    @Binding var minute: Int
     @State var selectedTime = Date()
-    
-    
     var body: some View {
-        VStack {
+        /*VStack {
             Text("Selecione o tempo de treino:\n")
             HStack {
                 Text("Hora  :  Minuto")
@@ -26,19 +23,26 @@ struct TimePicker: View{
                 .datePickerStyle(.wheel)
                 .labelsHidden()
         }
+        */
         
-        
-        HStack {
-            CustomPicker("H", 0...24, $hour)
-            CustomPicker("Min", 0...59, $minute)
+        HStack(spacing: 0){
+            CustomPicker("hours", 0...10, $hour)
+            CustomPicker("mins", 0...59, $minute)
         }
-        .padding()
+        .offset(x: -25)
+        .background {
+            RoundedRectangle(cornerRadius: 10)
+                .fill(style)
+                .frame(height: 35)
+        }
         
     }
+    @ViewBuilder
     private func CustomPicker(_ title: String, _ range: ClosedRange<Int>, _ selection: Binding<Int>) -> some View {
-        Time(selection: $hour){
+        Time(selection: selection){
             ForEach(range, id: \.self) { value in
                 Text("\(value)")
+                    .frame(width: 35, alignment: .trailing)
                     .tag(value)
             }
         }
@@ -57,9 +61,15 @@ struct TimePicker: View{
 struct Time<Content: View, Selection: Hashable>: View {
     @Binding var selection: Selection
     @ViewBuilder var content: Content
+    @State private var isHidden: Bool = false
     var body: some View {
         VStack {
             Picker("", selection: $selection) {
+                if !isHidden {
+                    IndicatorRemove {
+                        isHidden = true
+                    }
+                }
                 content
             }
             .pickerStyle(.wheel)
@@ -67,7 +77,39 @@ struct Time<Content: View, Selection: Hashable>: View {
     }
 }
 
+fileprivate
+struct IndicatorRemove: UIViewRepresentable {
+    var result: () -> ()
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView()
+        view.backgroundColor = .clear
+        DispatchQueue.main.async{
+            if let pickerView = view.pickerView {
+                if pickerView.subviews.count >= 2 {
+                    pickerView.subviews[1].backgroundColor = .clear
+                }
+                result()
+            }
+        }
+        
+        return view
+    }
+    func updateUIView(_ uiView: UIView, context: Context) {
+        
+    }
+}
+
+fileprivate
+extension UIView {
+    var pickerView: UIPickerView? {
+        if let view = superview as? UIPickerView {
+            return view
+        }
+        
+        return superview?.pickerView
+    }
+}
 
 #Preview {
-    TimePicker(hour: 0, minute: 0)
+    ContentView()
 }
