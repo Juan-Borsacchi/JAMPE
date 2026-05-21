@@ -9,6 +9,7 @@ import SwiftUI
 
 // Juan
 struct TimePicker: View{
+    //Duas views para simular toggle e dois corpos
     var style: AnyShapeStyle = .init(.bar)
     @Binding var hour: Int
     @Binding var minute: Int
@@ -22,12 +23,11 @@ struct TimePicker: View{
             DatePicker("Select Time", selection: $selectedTime, displayedComponents: .hourAndMinute)
                 .datePickerStyle(.wheel)
                 .labelsHidden()
-        }
-        */
+        }*/
         
         HStack(spacing: 0){
-            CustomPicker("hours", 0...10, $hour)
-            CustomPicker("mins", 0...59, $minute)
+            CustomPicker(hour <= 1 ? "hour" : "hours", 0...10, $hour)
+            CustomPicker(minute <= 1 ? "min" : "mins", 0...59, $minute)
         }
         .offset(x: -25)
         .background {
