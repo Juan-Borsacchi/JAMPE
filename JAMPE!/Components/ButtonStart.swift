@@ -24,7 +24,7 @@ struct PrimaryButton: View {
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .frame(height: isIpad ? 80 : 68)
-                .background(Color.azulTitulo)
+                .background(Color.titleBlue)
                 .clipShape(Capsule())
                 .shadow(color: .black.opacity(0.28), radius: 4, x: 0, y: 4)
                 .scaleEffect(isPressed ? 0.97 : 1)
