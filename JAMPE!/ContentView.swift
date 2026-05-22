@@ -23,7 +23,9 @@ struct ContentView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(.gray.opacity(0.15))
         }
-        
+        .onChange(of: [hour, minute]) { oldValues, newValues in
+            print("Tempo atualizado: \(newValues[0])h \(newValues[1])min")
+        }
     }
 }
 
