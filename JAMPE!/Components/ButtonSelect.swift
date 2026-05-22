@@ -8,37 +8,49 @@
 import SwiftUI
 
 struct ButtonSelect: View {
-    @State var positions: [String]
+    @State var options: [String]
     //= ["Levantador","Líbero","Central","Ponta","Oposto"]
     @State var selected: String
+    @State var width: CGFloat
+    @State var height: CGFloat
     var body: some View {
         VStack (spacing: 12){
-            ForEach(positions, id: \.self) { positions in
+            ForEach(options, id: \.self) { option in
                 Button(action: {
-                    print("Clicou em: \(positions)")
-                    selected = positions
+                    print("Clicou em: \(option)")
+                    selected = option
                     print(selected)
                 }) {
                     HStack(spacing: 20){
-                        if positions == selected {
+                        if option == selected {
                             Image(systemName: "checkmark.circle.fill")
-                                .font(.system(size: 30, weight: .bold))
-                                .foregroundColor(.border)
+                                .font(.system(size: 28, weight: .bold))
+                                .foregroundColor(.white)
+                                .background(
+                                    Circle()
+                                        .fill(.black)
+                                        .padding(2)
+                                )
                         }
                         else {
                             Image(systemName: "poweroff")
                                 .font(.system(size: 30, weight: .ultraLight))
                                 .foregroundColor(.border)
                         }
-                        Text(positions)
+                        Text(option)
                             .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(.border)
+                            .foregroundColor(option == selected ? (isBorg(option) ? .black : .white) : .border)
                     }
-                    .frame(width: 200, height: 45, alignment: .leading)
+                    .frame(width: width, height: height, alignment: .leading)
                     .padding(.horizontal)
+                    .background(
+                        RoundedRectangle(cornerRadius: 40)
+                        
+                            .fill(option == selected ? resolveColor(for: option) : Color.clear)
+                    )
                     .overlay(
-                            RoundedRectangle(cornerRadius: 40)
-                                .stroke(Color.border, lineWidth: 1))
+                        RoundedRectangle(cornerRadius: 40)
+                            .stroke(Color.border, lineWidth: 1))
                     //.buttonStyle(.bordered)
                     //.tint(Color.blue)
                     
@@ -48,9 +60,27 @@ struct ButtonSelect: View {
         }
         .padding()
     }
+    private func isBorg(_ option: String) -> Bool {
+            return borgIntensity(rawValue: option) != nil
+        }
+        
+        // Nova lógica de cores controlada
+        private func resolveColor(for option: String) -> Color {
+            if let intensityCase = borgIntensity(rawValue: option) {
+                // Se for Borg, retorna a cor colorida da escala
+                return intensityCase.backgroundColor
+            }
+            // Se NÃO for Borg (ou seja, se for as posições do Vôlei), retorna o fundo preto
+            return Color.black
+        }
 }
 
 
-#Preview {
-    ButtonSelect(positions: ["Extremamente Leve","Muito Leve","Ainda Bastante Leve", "Leve", "Quase Moderado", "Moderado", "Quase Intenso", "Intenso", "Muito Intenso", "Extremadamente Intenso"], selected: "")
+#Preview("Teste Vôlei") {
+    ButtonSelect(options: voleiPositions.allCases.map { $0.rawValue }, selected: "Levantador", width: 300, height: 45)
+}
+
+// Preview testando com Borg (vai ficar colorido ao selecionar)
+#Preview("Teste Borg") {
+    ButtonSelect(options: borgIntensity.allCases.map { $0.rawValue }, selected: "Moderado", width: 300, height: 45)
 }

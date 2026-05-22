@@ -5,9 +5,9 @@
 //  Created by Juan Gabriel Borsacchi Marques on 22/05/26.
 //
 
-import Foundation
+import SwiftUI
 
-enum positions: String, CaseIterable {
+enum voleiPositions: String, CaseIterable {
     case levantador = "Levantador"
     case libero = "Líbero"
     case central = "Central"
@@ -15,7 +15,7 @@ enum positions: String, CaseIterable {
     case oposto = "Oposto"
 }
 
-enum intensidade: String, CaseIterable {
+enum borgIntensity: String, CaseIterable {
     case extremamenteLeve = "Extremamente Leve"
     case muitoLeve = "Muito Leve"
     case bastanteLeve = "Ainda Bastante Leve"
@@ -26,4 +26,29 @@ enum intensidade: String, CaseIterable {
     case intenso = "Intenso"
     case muitoIntenso = "Muito Intenso"
     case extremamenteIntenso = "Extremamente Intenso"
+    
+    var backgroundColor: Color {
+            switch self {
+            case .extremamenteLeve:
+                return Color.borgScale1
+            case .muitoLeve:
+                return Color.borgScale2
+            case .bastanteLeve:
+                return Color.borgScale3
+            case .leve:
+                return Color.borgScale4
+            case .quaseModerado:
+                return Color.borgScale5
+            case .moderado:
+                return Color.borgScale6
+            case .quaseIntenso:
+                return Color.borgScale7
+            case .intenso:
+                return Color.borgScale8
+            case .muitoIntenso:
+                return Color.borgScale9
+            case .extremamenteIntenso:
+                return Color.borgScale10
+            }
+        }
 }
