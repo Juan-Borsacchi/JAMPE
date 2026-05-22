@@ -16,7 +16,17 @@ struct TelaSimulacao: View {
             
             Text("Áreas afetadas na posição: Líbero")
             
+            Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ")
+            
             Text("Sugestão de horas de descanso")
+            
+            RecoveryTimeCard(hours: 72)
+            
+            PrimaryButton(title: "Nova simulação"){
+                print("..")
+            }
+            .padding(.horizontal)
+            
         }
     }
 }
