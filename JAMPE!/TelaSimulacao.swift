@@ -11,7 +11,7 @@ struct TelaSimulacao: View {
     var body: some View {
         VStack {
             Text("Resultado da Simulação")
-                .foregroundStyle(Color.restBlue)
+                .foregroundStyle(Color("TitleBlue"))
                 .font(.system(size: 28, weight: .bold,design: .default))
             
             Text("Áreas afetadas na posição: Líbero")

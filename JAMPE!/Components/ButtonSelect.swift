@@ -23,22 +23,22 @@ struct ButtonSelect: View {
                         if positions == selected {
                             Image(systemName: "checkmark.circle.fill")
                                 .font(.system(size: 30, weight: .bold))
-                                .foregroundColor(.bordas)
+                                .foregroundColor(.border)
                         }
                         else {
                             Image(systemName: "poweroff")
                                 .font(.system(size: 30, weight: .ultraLight))
-                                .foregroundColor(.bordas)
+                                .foregroundColor(.border)
                         }
                         Text(positions)
                             .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(.bordas)
+                            .foregroundColor(.border)
                     }
                     .frame(width: 200, height: 45, alignment: .leading)
                     .padding(.horizontal)
                     .overlay(
                             RoundedRectangle(cornerRadius: 40)
-                                .stroke(Color.bordas, lineWidth: 1))
+                                .stroke(Color.border, lineWidth: 1))
                     //.buttonStyle(.bordered)
                     //.tint(Color.blue)
                     
