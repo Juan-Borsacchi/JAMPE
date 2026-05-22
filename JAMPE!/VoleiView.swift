@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AboutVolei: View {
+struct VoleiView: View {
     
     let isIpad = UIDevice.current.userInterfaceIdiom == .pad
     
@@ -20,13 +20,15 @@ struct AboutVolei: View {
                     .multilineTextAlignment(.center)
                     .minimumScaleFactor(0.8)
                 ProgressView(value: 1, total: 2)
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal)
                     .tint(Color.titleBlue)
-                
             }
+            Spacer()
         }
     }
 }
 
 #Preview {
-    AboutVolei()
+    VoleiView()
 }
