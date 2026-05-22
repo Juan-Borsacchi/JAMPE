@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SplashScreen: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     let isIpad = UIDevice.current.userInterfaceIdiom == .pad
     var body: some View {
             VStack {
