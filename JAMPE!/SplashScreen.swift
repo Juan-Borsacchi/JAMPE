@@ -22,7 +22,7 @@ struct SplashScreen: View {
                     VStack(spacing: isIpad ? 72 : 48) {
                         Text("Bem-vindo(a)\nao Jampe!")
                             .font(isIpad ? .largeTitle.weight(.bold) :.title.weight(.bold))
-                            .foregroundStyle(Color.azulTitulo)
+                            .foregroundStyle(Color.titleBlue)
                             .multilineTextAlignment(.center)
                             .minimumScaleFactor(0.8)
                         
