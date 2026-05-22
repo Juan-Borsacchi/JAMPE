@@ -11,7 +11,7 @@ import SwiftUI
 struct JAMPE_App: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SplashScreen()
         }
     }
 }
