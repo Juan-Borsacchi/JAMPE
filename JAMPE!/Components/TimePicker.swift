@@ -43,12 +43,14 @@ struct TimePicker: View{
             ForEach(range, id: \.self) { value in
                 Text("\(value)")
                     .frame(width: 35, alignment: .trailing)
+                    .foregroundStyle(.border)
                     .tag(value)
             }
         }
         .overlay{
             Text(title)
                 .font(.callout)
+                .foregroundStyle(.border)
                 .frame(width: 50, alignment: .leading)
                 .lineLimit(1)
                 .offset(x: 50)
@@ -74,6 +76,7 @@ struct Time<Content: View, Selection: Hashable>: View {
             }
             .pickerStyle(.wheel)
         }
+        .foregroundStyle(.border)
     }
 }
 
@@ -111,5 +114,5 @@ extension UIView {
 }
 
 #Preview {
-    ContentView()
+    TrainingView()
 }
