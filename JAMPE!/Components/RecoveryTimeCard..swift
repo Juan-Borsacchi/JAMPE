@@ -30,13 +30,7 @@ struct RecoveryTimeCard: View {
 
         .frame(width: 358, height: 139)
 
-        .background(
-            Color(
-                red: 0.13,
-                green: 0.56,
-                blue: 0.91
-            )
-        )
+        .background(Color("RestBlue"))
 
         .clipShape(
             RoundedRectangle(
