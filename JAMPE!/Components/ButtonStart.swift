@@ -31,11 +31,6 @@ struct PrimaryButton: View {
                 .animation(.spring(response: 0.25, dampingFraction: 0.7), value: isPressed)
         }
         .buttonStyle(.plain)
-        .simultaneousGesture(
-            DragGesture(minimumDistance: 0)
-                .onChanged { _ in isPressed = true }
-                .onEnded { _ in isPressed = false }
-        )
         .accessibilityLabel(title)
         .accessibilityHint("Começar")
     }
