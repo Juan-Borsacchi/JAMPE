@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct ButtonSelect: View {
+    let isIpad = UIDevice.current.userInterfaceIdiom == .pad
     @State var options: [String]
     //= ["Levantador","Líbero","Central","Ponta","Oposto"]
     @State var selected: String
-    @State var width: CGFloat
+    //@State var width: CGFloat
     @State var height: CGFloat
     var body: some View {
-        VStack (spacing: 12){
+        VStack (spacing: 10){
             ForEach(options, id: \.self) { option in
                 Button(action: {
                     print("Clicou em: \(option)")
@@ -28,9 +29,9 @@ struct ButtonSelect: View {
                                 .foregroundColor(.white)
                                 .background(
                                     Circle()
-                                        .fill(.black)
-                                        .padding(2)
+                                        .fill(isBorg(option) ? resolveColor(for: option) : Color.titleBlue)
                                 )
+
                         }
                         else {
                             Image(systemName: "poweroff")
@@ -38,11 +39,11 @@ struct ButtonSelect: View {
                                 .foregroundColor(.border)
                         }
                         Text(option)
-                            .font(.system(size: 12, weight: .medium))
+                            .font(.system(size: isIpad ? 26 : 16 , weight: .regular))
                             .foregroundColor(option == selected ? (isBorg(option) ? .black : .white) : .border)
                     }
                     .frame(maxWidth: .infinity, maxHeight: height, alignment: .leading)
-                    .padding(.horizontal, 10)
+                    .padding(.horizontal, 8)
                     .background(
                         RoundedRectangle(cornerRadius: 40)
                         
@@ -64,23 +65,22 @@ struct ButtonSelect: View {
             return borgIntensity(rawValue: option) != nil
         }
         
-        // Nova lógica de cores controlada
         private func resolveColor(for option: String) -> Color {
             if let intensityCase = borgIntensity(rawValue: option) {
                 // Se for Borg, retorna a cor colorida da escala
                 return intensityCase.backgroundColor
             }
-            // Se NÃO for Borg (ou seja, se for as posições do Vôlei), retorna o fundo preto
-            return Color.black
+            // Se NÃO for Borg (ou seja, se for as posições do Vôlei), retorna o fundo da cor abaixo
+            return Color.titleBlue
         }
 }
 
 
 #Preview("Teste Vôlei") {
-    ButtonSelect(options: voleiPositions.allCases.map { $0.rawValue }, selected: "Levantador", width: 300, height: 45)
+    ButtonSelect(options: voleiPositions.allCases.map { $0.rawValue }, selected: "", height: 45)
 }
 
-// Preview testando com Borg (vai ficar colorido ao selecionar)
+//Preview testando com Borg (vai ficar colorido ao selecionar)
 #Preview("Teste Borg") {
-    ButtonSelect(options: borgIntensity.allCases.map { $0.rawValue }, selected: "Moderado", width: 300, height: 45)
+    ButtonSelect(options: borgIntensity.allCases.map { $0.rawValue }, selected: "", height: 45)
 }
