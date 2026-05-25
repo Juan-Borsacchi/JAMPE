@@ -26,13 +26,13 @@ struct ProgressBar: View {
             
             HStack{
                 Text("Etapa 1")
-                    .font(.caption)
+                    .font(.subheadline)
                     .foregroundColor(progress <= 0.5 ? .titleBlue : .gray)
                 
                 Spacer()
                 
                 Text("Etapa 2")
-                    .font(.caption)
+                    .font(.subheadline)
                     .foregroundColor(progress <= 0.5 ? .gray : .titleBlue)
             }
         }

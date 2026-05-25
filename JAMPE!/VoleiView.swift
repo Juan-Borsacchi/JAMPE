@@ -24,15 +24,47 @@ struct VoleiView: View {
                 
                 VStack{
                     Text("Você domina os fundamentos do vôlei, considerando teoria e prática?")
-                        .font(.title2)
+                        .font(.title2.weight(.bold))
+                        .foregroundColor(.titleBlue)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     HStack{
-                        Text("Ex. Manchete e Toque")
-                        Spacer()
-                        Toggle("", isOn: .constant(true))
-                    }
+                        Toggle("Ex. Manchete e Toque", isOn: .constant(false))
+                            .tint(.titleBlue)
+                            .font(.callout)
+                            .foregroundColor(.gray)
+                    }.padding(.horizontal, 12)
+                }.padding(.horizontal, 16)
+                    .padding(.top, 28)
+                    .padding(.bottom, 16)
+                
+                Rectangle()
+                    .fill(Color.gray.opacity(0.2))
+                    .frame(height: 1)
+                    .padding(.horizontal, 16)
+                VStack{
+                    Text("Qual sua posição em quadra?")
+                        .font(.title2.weight(.bold))
+                        .foregroundColor(.titleBlue)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal, 16)
+                        .padding(.top, 32)
+                    
+                    ButtonSelect(options: voleiPositions.allCases.map { $0.rawValue }, selected: "", height: 45)
+                    
                 }
+                Spacer()
+                
+                VStack {
+                    PrimaryButton(title: "Começar") {
+                       // navigateNext = true
+                    }
+                    .padding(.horizontal, isIpad ? 92 : 52)
+                    
+                }.padding(.bottom, 16)
             }
+            
             Spacer()
+            
         }
     }
 }
