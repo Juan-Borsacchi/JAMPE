@@ -17,7 +17,7 @@ struct WarningPopUp: View {
 
             WarningPopUpCard(
                 title: "Aviso Importante",
-                message: "Este aplicativo tem caráter educativo e não substitui avaliação profissional.",
+                message: "Este aplicativo tem caráter instrutivo e não substitui avaliação profissional.",
                 buttonTitle: "Entendi"
             ) {
 
