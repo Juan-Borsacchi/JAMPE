@@ -24,7 +24,7 @@ struct TrainingView: View {
                     }
                     //Insira a progress bar aqui
                     Text("Qual foi a duração do seu treino?")
-                        .font(.system(size: 22, design: .rounded))
+                        .font(.system(.title, design: .rounded))
                     TimePicker(hour: $hour, minute: $minute)
                         .padding(15)
                     //.background(in: .rect(cornerRadius: 10))

@@ -15,7 +15,7 @@ struct ButtonSelect: View {
     //@State var width: CGFloat
     @State var height: CGFloat
     var body: some View {
-        VStack (spacing: 10){
+        VStack (spacing: 20){
             ForEach(options, id: \.self) { option in
                 Button(action: {
                     print("Clicou em: \(option)")
@@ -39,7 +39,7 @@ struct ButtonSelect: View {
                                 .foregroundColor(.border)
                         }
                         Text(option)
-                            .font(.system(size: isIpad ? 26 : 16 , weight: .regular))
+                            .font(.system(isIpad ? .title : .callout , weight: .regular))
                             .foregroundColor(option == selected ? (isBorg(option) ? .black : .white) : .border)
                     }
                     .frame(maxWidth: .infinity, maxHeight: height, alignment: .leading)
