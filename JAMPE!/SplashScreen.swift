@@ -89,7 +89,7 @@ struct SplashScreen: View {
                     .padding(.bottom, 52)
                 }.frame(maxHeight: 68)
                     .navigationDestination(isPresented: $navigateNext) {
-                        AboutVolei()
+                        VoleiView()
                 }
             }
             .background(Color.background)
