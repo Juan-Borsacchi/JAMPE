@@ -19,15 +19,16 @@ struct TelaSimulacao: View {
     
     var body: some View {
             
-            ScrollView {
+    ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    
+                    //titulo
                     Text("Resultado da simulação")
                         .foregroundStyle(Color("TitleBlue"))
-                        .font(.system(size: 26, weight: .bold))
+                        .font(.system(size: 28, weight: .bold))
                         .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.top, 20)
                     
+                    //caixinha com o corpo
                     VStack(spacing: 0) {
                         HStack {
                             Spacer()
@@ -39,6 +40,7 @@ struct TelaSimulacao: View {
                             .pickerStyle(.segmented)
                             .frame(width: 150)
                             .padding([.top, .trailing], 16)
+                            Spacer()
                         }
                         
                         ZStack {
@@ -46,41 +48,48 @@ struct TelaSimulacao: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(height: 300)
-                                .padding(.bottom, 20)
+                                .opacity(0.4)
+                                .padding(.vertical, 22)
                             
                         }
                     }
-                    .background(Color.blue.opacity(0.05))
-                    .cornerRadius(12)
+                    .background(Color.bodyBox)
+                    .cornerRadius(6)
                     .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color.blue, lineWidth: 1)
+                        RoundedRectangle(cornerRadius: 6)
+                            .stroke(Color.borderBodyBox, lineWidth: 3)
                     )
                     .padding(.horizontal)
                     
                     // Legenda
-                    HStack(spacing: 8) {
+                    HStack(spacing: 10) {
                         Circle()
-                            .fill(Color.red.opacity(0.4))
-                            .frame(width: 12, height: 12)
+                            .fill(Color.red.opacity(0.5))
+                            .frame(width: 16, height: 16)
                         Text("Áreas afetadas")
                             .font(.system(size: 14))
                             .foregroundColor(.gray)
                     }
-                    .padding(.leading, 20)
+                    .padding(.leading, 16)
                     .padding(.top, -10)
 
                     // Textos informativos
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Áreas afetadas na posição: Líbero")
-                            .font(.system(size: 22, weight: .bold))
+                            //.font(.system(size: 22, weight: .bold))
+                            .font(.title3.weight(.bold))
                             .foregroundStyle(Color("TitleBlue"))
                         
                         Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
                             .font(.system(size: 16))
                             .lineSpacing(4)
+                            .foregroundColor(Color("TextColorAffected"))
+                            .multilineTextAlignment(.leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, 16)
+                    .font(.system(size: 16, weight: .semibold, design: .rounded))
+                    
                     
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Sugestão de horas de descanso")
@@ -89,12 +98,12 @@ struct TelaSimulacao: View {
                         
                         RecoveryTimeCard(hours: 72)
                     }
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, 16)
                     
                     PrimaryButton(title: "Nova Simulação") {
                         print("Ação do botão")
                     }
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, 40)
                     .padding(.top, 10)
                     .padding(.bottom, 30)
                 }
