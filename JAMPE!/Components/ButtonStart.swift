@@ -23,7 +23,7 @@ struct PrimaryButton: View {
                 .font(isIpad ? .largeTitle.weight(.semibold) : .title.weight(.semibold))
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
-                .frame(height: isIpad ? 80 : 68)
+                .frame(height: isIpad ? 80 : 60)
                 .background(Color.titleBlue)
                 .clipShape(Capsule())
                 .shadow(color: .black.opacity(0.28), radius: 4, x: 0, y: 4)
