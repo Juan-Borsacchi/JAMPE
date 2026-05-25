@@ -112,7 +112,8 @@ extension UIView {
         return superview?.pickerView
     }
 }
-
+/*
 #Preview {
     TrainingView()
 }
+*/

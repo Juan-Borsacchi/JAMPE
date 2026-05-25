@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TrainingView: View {
+    let playerPosition: PlayerPosition
     @State private var hour: Int = 0
     @State private var minute: Int = 0
     @State private var navigateNext = false
@@ -37,7 +38,7 @@ struct TrainingView: View {
                         navigateNext = true
                     }
                     .navigationDestination(isPresented: $navigateNext) {
-                        TelaSimulacao()
+                        TelaSimulacao(playerPosition: playerPosition)
                     }
                 }
                     .padding(.horizontal, 16)
@@ -52,5 +53,5 @@ struct TrainingView: View {
 }
 
 #Preview {
-    TrainingView()
+    TrainingView(playerPosition: .libero)
 }
