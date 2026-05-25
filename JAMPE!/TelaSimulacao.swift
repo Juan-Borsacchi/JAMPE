@@ -76,7 +76,8 @@ struct TelaSimulacao: View {
                     // Textos informativos
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Áreas afetadas na posição: Líbero")
-                            .font(.system(size: 22, weight: .bold))
+                            //.font(.system(size: 22, weight: .bold))
+                            .font(.title3.weight(.bold))
                             .foregroundStyle(Color("TitleBlue"))
                         
                         Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
