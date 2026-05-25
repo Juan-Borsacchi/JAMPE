@@ -12,11 +12,12 @@ struct RecoveryTimeCard: View {
 
     var body: some View {
 
-        HStack(spacing: 20) {
+        HStack(spacing: 17) {
 
             Text("\(hours) h")
-                .font(.system(size: 56, weight: .bold))
+                .font(.system(size: 57, weight: .bold))
                 .foregroundStyle(.white)
+                .padding(.leading, 8)
 
             Text("Esse é o tempo estimado para que seu corpo se recupere adequadamente e reduza o risco de lesões.")
                 .font(.system(size: 13, weight: .medium))
@@ -26,7 +27,7 @@ struct RecoveryTimeCard: View {
             Spacer()
         }
 
-        .padding(.horizontal, 24)
+        .padding(.horizontal, 10)
 
         .frame(width: 358, height: 139)
 
