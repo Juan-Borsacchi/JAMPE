@@ -13,13 +13,31 @@ struct TrainingView: View {
     var body: some View {
         NavigationStack{
             VStack{
+                HStack{
+                    Text("Sobre o Treino")
+                        .font(.largeTitle)
+                        .bold()
+                        .foregroundStyle(.titleBlue)
+                }
+                //Insira a progress bar aqui
+                Spacer()
+                Text("Qual foi a duração do seu treino?")
+                    .font(.system(size: 22, design: .rounded))
+                    
                 TimePicker(hour: $hour, minute: $minute)
                     .padding(15)
-                    .background(.white, in: .rect(cornerRadius: 10))
+                    //.background(in: .rect(cornerRadius: 10))
                     .padding(.horizontal, 20)
+                Spacer()
+                Spacer()
+                Spacer()
+                Spacer()
+                Spacer()
+                Spacer()
+                Spacer()
+                Spacer()
             }
             .padding(15)
-            .navigationTitle(Text("JAMPE!"))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(.gray.opacity(0.15))
         }
