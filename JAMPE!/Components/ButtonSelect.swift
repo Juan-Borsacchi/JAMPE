@@ -41,8 +41,8 @@ struct ButtonSelect: View {
                             .font(.system(size: 12, weight: .medium))
                             .foregroundColor(option == selected ? (isBorg(option) ? .black : .white) : .border)
                     }
-                    .frame(width: width, height: height, alignment: .leading)
-                    .padding(.horizontal)
+                    .frame(maxWidth: .infinity, maxHeight: height, alignment: .leading)
+                    .padding(.horizontal, 10)
                     .background(
                         RoundedRectangle(cornerRadius: 40)
                         
