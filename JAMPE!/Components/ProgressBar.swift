@@ -8,11 +8,43 @@
 import SwiftUI
 
 struct ProgressBar: View {
+    var progress: Double
+    var color: Color = .titleBlue
+    let height: CGFloat = 10
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(alignment: .leading, spacing: 8) {
+            ZStack(alignment: .leading) {
+                RoundedRectangle(cornerRadius: height / 2)
+                    .fill(Color.gray.opacity(0.3))
+                    .frame(height: height)
+                
+                RoundedRectangle(cornerRadius: height / 2)
+                    .fill(color)
+                    .frame(width: progressWidth(), height: height)
+            }
+            
+            HStack{
+                Text("Etapa 1")
+                    .font(.caption)
+                    .foregroundColor(progress <= 0.5 ? .titleBlue : .gray)
+                
+                Spacer()
+                
+                Text("Etapa 2")
+                    .font(.caption)
+                    .foregroundColor(progress <= 0.5 ? .gray : .titleBlue)
+            }
+        }
+        .padding(.horizontal, 16)
+    }
+    
+    func progressWidth() -> CGFloat {
+        let screenWidth = UIScreen.main.bounds.width - 30
+        return screenWidth * CGFloat(progress)
     }
 }
 
 #Preview {
-    ProgressBar()
+    ProgressBar(progress: 0.5)
 }

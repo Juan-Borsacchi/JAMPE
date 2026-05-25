@@ -19,10 +19,18 @@ struct VoleiView: View {
                     .foregroundStyle(Color.titleBlue)
                     .multilineTextAlignment(.center)
                     .minimumScaleFactor(0.8)
-                ProgressView(value: 1, total: 2)
-                    .frame(maxWidth: .infinity)
-                    .padding(.horizontal)
-                    .tint(Color.titleBlue)
+               
+                ProgressBar(progress: 0.5)
+                
+                VStack{
+                    Text("Você domina os fundamentos do vôlei, considerando teoria e prática?")
+                        .font(.title2)
+                    HStack{
+                        Text("Ex. Manchete e Toque")
+                        Spacer()
+                        Toggle("", isOn: .constant(true))
+                    }
+                }
             }
             Spacer()
         }
