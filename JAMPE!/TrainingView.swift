@@ -34,19 +34,23 @@ struct TrainingView: View {
                     ButtonSelect(options: borgIntensity.allCases.map { $0.rawValue }, selected: $selectedIntensity, height: 45)
                         .frame(maxWidth: .infinity)
                     
-                    
-                    PrimaryButton(title: "Simular") {
-                        navigateNext = true
-                    }
-                    .navigationDestination(isPresented: $navigateNext) {
-                        TelaSimulacao(playerPosition: playerPosition)
-                    }
+                    Spacer()
+                    BorgScaleText(texts: borgFelling.allCases.map { $0.rawValue })
+                        .padding(16)
                 }
-                    .padding(.horizontal, 16)
+                .ignoresSafeArea()
+                
+                PrimaryButton(title: "Simular") {
+                    navigateNext = true
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(.gray.opacity(0.15))
+                .navigationDestination(isPresented: $navigateNext) {
+                    TelaSimulacao(playerPosition: playerPosition)
+                }
+            }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(.gray.opacity(0.15))
+        .padding(.horizontal, 16)
         .onChange(of: [hour, minute]) { oldValues, newValues in
             print("Tempo atualizado: \(newValues[0])h \(newValues[1])min")
         }
