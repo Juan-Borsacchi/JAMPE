@@ -10,6 +10,7 @@ import SwiftUI
 struct VoleiView: View {
     
     @State private var position = ""
+    @State private var knowsVoleiBasics = false
     
     @State private var navigateNext = false
     
@@ -51,7 +52,7 @@ struct VoleiView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.bottom, 16)
                     HStack{
-                        Toggle("Ex. Manchete e Toque", isOn: .constant(false))
+                        Toggle("Ex. Manchete e Toque", isOn: $knowsVoleiBasics)
                             .tint(.titleBlue)
                             .font(.callout)
                             .foregroundColor(.gray)
@@ -105,7 +106,7 @@ struct VoleiView: View {
         }
         .navigationDestination(isPresented: $navigateNext) {
             if let selectedPlayerPosition {
-                TrainingView(playerPosition: selectedPlayerPosition)
+                TrainingView(playerPosition: selectedPlayerPosition, knowsVoleiBasics: knowsVoleiBasics)
             }
         }
     }
