@@ -77,7 +77,12 @@ struct TrainingView: View {
                     }
                     .padding(.horizontal)
                     .navigationDestination(isPresented: $navigateNext) {
-                        TelaSimulacao(playerPosition: playerPosition)
+                        TelaSimulacao(
+                                playerPosition: .levantador,
+                                borgScale: 6,
+                                durationMinutes: 90,
+                                dominaFundamentos: false
+                            )
                     }
 
                 }
