@@ -10,7 +10,7 @@ import SwiftUI
 struct TrainingView: View {
     let playerPosition: PlayerPosition
     
-    //let knowsVoleiBasics: Bool
+    let knowsVoleiBasics: Bool
     
     @State private var selectedIntensity = ""
     
@@ -92,5 +92,5 @@ struct TrainingView: View {
 }
 
 #Preview {
-    TrainingView(playerPosition: .libero/*, knowsVoleiBasics: true*/)
+    TrainingView(playerPosition: .libero, knowsVoleiBasics: true)
 }
