@@ -7,43 +7,38 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct BorgScaleText: View {
     @State var texts: [String]
     
+    let isIpad = UIDevice.current.userInterfaceIdiom == .pad
+    
     var body: some View {
-        VStack(alignment: .center, spacing: 0) { 
+        VStack(spacing: 0) {
             ForEach(texts, id: \.self) { text in
-                VStack {
+                VStack(alignment: .center) {
                     Text(text)
-                        .font(.caption)
+                        .font(isIpad ? .title : .caption)
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color(red: 0.3, green: 0.3, blue: 0.3))
-                        .frame(width: 110)
+                        .frame(maxWidth: isIpad ? 350 : 150)
                 }
-                .padding(10)
-                .frame(maxWidth: .infinity, maxHeight: 100, alignment: .center)
+                .frame(maxWidth: isIpad ? 450 : 110)
+                .frame(height: 126)
                 .overlay(alignment: .top) {
                     Rectangle()
-                        .inset(by: 0.5)
-                        .stroke(.black.opacity(0.1), lineWidth: 1)
+                        .fill(Color.black.opacity(0.1))
                         .frame(height: 1)
                 }
             }
-            .padding(.top, 30)
-            //.padding(.bottom, 30)
         }
+        .frame(height: 630)
         .overlay(alignment: .bottom) {
             Rectangle()
-                .inset(by: 0.5)
-                .stroke(.black.opacity(0.1), lineWidth: 1)
+                .fill(Color.black.opacity(0.1))
                 .frame(height: 1)
         }
     }
 }
-
-
 
 #Preview {
     BorgScaleText(texts: borgFelling.allCases.map { $0.rawValue })

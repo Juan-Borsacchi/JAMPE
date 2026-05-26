@@ -12,6 +12,8 @@ struct ProgressBar: View {
     var color: Color = .titleBlue
     let height: CGFloat = 6
     
+    let isIpad = UIDevice.current.userInterfaceIdiom == .pad
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             ZStack(alignment: .leading) {
@@ -26,13 +28,13 @@ struct ProgressBar: View {
             
             HStack{
                 Text("Etapa 1")
-                    .font(.subheadline)
+                    .font(isIpad ? .title2 : .subheadline)
                     .foregroundColor(progress <= 0.5 ? .titleBlue : .gray)
                 
                 Spacer()
                 
                 Text("Etapa 2")
-                    .font(.subheadline)
+                    .font(isIpad ? .title2 : .subheadline)
                     .foregroundColor(progress <= 0.5 ? .gray : .titleBlue)
             }
         }
