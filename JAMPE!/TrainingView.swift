@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TrainingView: View {
     let playerPosition: PlayerPosition
+    @State private var selectedIntensity = ""
     @State private var hour: Int = 0
     @State private var minute: Int = 0
     @State private var navigateNext = false
@@ -30,7 +31,7 @@ struct TrainingView: View {
                     //.background(in: .rect(cornerRadius: 10))
                         .padding(.horizontal, 20)
                     
-                    ButtonSelect(options: borgIntensity.allCases.map { $0.rawValue }, selected: "", height: 45)
+                    ButtonSelect(options: borgIntensity.allCases.map { $0.rawValue }, selected: $selectedIntensity, height: 45)
                         .frame(maxWidth: .infinity)
                     
                     
