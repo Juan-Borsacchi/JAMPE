@@ -11,7 +11,7 @@ struct ButtonSelect: View {
     let isIpad = UIDevice.current.userInterfaceIdiom == .pad
     @State var options: [String]
     //= ["Levantador","Líbero","Central","Ponta","Oposto"]
-    @State var selected: String
+    @Binding var selected: String
     //@State var width: CGFloat
     @State var height: CGFloat
     var body: some View {
@@ -42,7 +42,7 @@ struct ButtonSelect: View {
                             .font(.system(isIpad ? .title : .callout , weight: .regular))
                             .foregroundColor(option == selected ? (isBorg(option) ? .black : .white) : .border)
                     }
-                    .frame(maxWidth: .infinity, minHeight: height, maxHeight: height, alignment: .leading)
+                    .frame(maxWidth: .infinity,minHeight: height, maxHeight: height, alignment: .leading)
                     .padding(.horizontal, 8)
                     .background(
                         RoundedRectangle(cornerRadius: 40)
@@ -77,10 +77,10 @@ struct ButtonSelect: View {
 
 
 #Preview("Teste Vôlei") {
-    ButtonSelect(options: voleiPositions.allCases.map { $0.rawValue }, selected: "", height: 45)
+    ButtonSelect(options: voleiPositions.allCases.map { $0.rawValue }, selected: .constant(""), height: 45)
 }
 
 //Preview testando com Borg (vai ficar colorido ao selecionar)
 #Preview("Teste Borg") {
-    ButtonSelect(options: borgIntensity.allCases.map { $0.rawValue }, selected: "", height: 45)
+    ButtonSelect(options: borgIntensity.allCases.map { $0.rawValue }, selected: .constant(""), height: 45)
 }
