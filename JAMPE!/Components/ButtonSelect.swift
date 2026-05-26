@@ -42,7 +42,7 @@ struct ButtonSelect: View {
                             .font(.system(isIpad ? .title : .callout , weight: .regular))
                             .foregroundColor(option == selected ? (isBorg(option) ? .black : .white) : .border)
                     }
-                    .frame(maxWidth: .infinity, maxHeight: height, alignment: .leading)
+                    .frame(maxWidth: .infinity, minHeight: height, maxHeight: height, alignment: .leading)
                     .padding(.horizontal, 8)
                     .background(
                         RoundedRectangle(cornerRadius: 40)
@@ -59,7 +59,7 @@ struct ButtonSelect: View {
             }
             
         }
-        .padding()
+        //.padding()
     }
     private func isBorg(_ option: String) -> Bool {
             return borgIntensity(rawValue: option) != nil
