@@ -26,7 +26,7 @@ struct TimePicker: View{
         }*/
         
         HStack(spacing: 0){
-            CustomPicker("hour", 0...10, $hour)
+            CustomPicker("horas", 0...10, $hour)
             CustomPicker("min", 0...59, $minute)
         }
         .offset(x: -25)
