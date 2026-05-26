@@ -35,3 +35,9 @@ struct PrimaryButton: View {
         .accessibilityHint("Começar")
     }
 }
+
+#Preview {
+    PrimaryButton(title: "Próxima Etapa"){
+        
+    }
+}

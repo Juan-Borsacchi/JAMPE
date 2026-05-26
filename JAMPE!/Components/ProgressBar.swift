@@ -10,7 +10,7 @@ import SwiftUI
 struct ProgressBar: View {
     var progress: Double
     var color: Color = .titleBlue
-    let height: CGFloat = 10
+    let height: CGFloat = 6
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
