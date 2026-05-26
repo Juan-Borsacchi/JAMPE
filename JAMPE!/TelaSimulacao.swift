@@ -4,6 +4,7 @@
 //
 //  Created by Agatha Barbosa Marinho dos Santos on 22/05/26.
 //
+
 import SwiftUI
 
 enum VisionBody: String, CaseIterable, Identifiable {
@@ -106,10 +107,13 @@ enum PlayerPosition: String, CaseIterable {
 
 // Componente isolado para criar as ondas vibrantes infinitas do sonar
 struct NeonPulseIndicator: View {
+    
     @State private var waveAnimation = false
     
     var body: some View {
+        
         ZStack {
+            
             // Ondas externas (Efeito Sonar Vibrante)
             ForEach(0..<3) { index in
                 Circle()
@@ -142,113 +146,146 @@ struct TelaSimulacao: View {
     let playerPosition: PlayerPosition
     
     @State private var SelectedVision: VisionBody = .front
+    @State private var showWarning = true
     
     let isIpad = UIDevice.current.userInterfaceIdiom == .pad
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                // Título
-                Text("Resultado da simulação")
-                    .font(isIpad ? .largeTitle.weight(.bold) :.title.weight(.bold))
-                    .foregroundStyle(Color("TitleBlue"))
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.top, 20)
+        
+        ZStack {
+            
+            Color.background
+                .ignoresSafeArea()
+            
+            ScrollView {
                 
-                // Caixinha com o corpo
-                VStack(spacing: 0) {
-                    HStack {
-                        Spacer()
-                        Picker("", selection: $SelectedVision) {
-                            ForEach(VisionBody.allCases) { option in
-                                Text(option.rawValue).tag(option)
+                VStack(alignment: .leading, spacing: 20) {
+                    
+                    // Título
+                    Text("Resultado da simulação")
+                        .font(isIpad ? .largeTitle.weight(.bold) :.title.weight(.bold))
+                        .foregroundStyle(Color("TitleBlue"))
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.top, 20)
+                    
+                    // Caixinha com o corpo
+                    VStack(spacing: 0) {
+                        
+                        HStack {
+                            Spacer()
+                            
+                            Picker("", selection: $SelectedVision) {
+                                ForEach(VisionBody.allCases) { option in
+                                    Text(option.rawValue).tag(option)
+                                }
+                            }
+                            .pickerStyle(.segmented)
+                            .frame(width: 150)
+                            .padding([.top, .trailing], 16)
+                            
+                            Spacer()
+                        }
+                        
+                        // Ajuste preciso do posicionamento das bolinhas
+                        ZStack {
+                            
+                            Image(SelectedVision == .front ? "corpo_frente" : "corpo_costas")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 200, height: 300) // Frame direto no elemento ancora
+                                .opacity(0.4)
+                            
+                            // Renderização das bolinhas dinâmicas
+                            ForEach(playerPosition.injuryPoints(for: SelectedVision), id: \.self) { point in
+                                NeonPulseIndicator()
+                                    .offset(x: point.x, y: point.y)
                             }
                         }
-                        .pickerStyle(.segmented)
-                        .frame(width: 150)
-                        .padding([.top, .trailing], 16)
-                        Spacer()
+                        .frame(width: 200, height: 300)
+                        .padding(.vertical, 22)
+                        .frame(maxWidth: .infinity)
                     }
+                    .background(Color.bodyBox)
+                    .cornerRadius(6)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 6)
+                            .stroke(Color.borderBodyBox, lineWidth: 3)
+                    )
+                    .padding(.horizontal)
                     
-                    // Ajuste preciso do posicionamento das bolinhas
-                    ZStack {
-                        Image(SelectedVision == .front ? "corpo_frente" : "corpo_costas")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 200, height: 300) // Frame direto no elemento ancora
-                            .opacity(0.4)
+                    // Legenda
+                    HStack(spacing: 6) {
+                        Image(systemName: "circle.fill")
+                            //.font(.system(size: 18))
+                            .font(.footnote)
+                            .foregroundStyle(Color.red.opacity(0.7))
                         
-                        // Renderização das bolinhas dinâmicas
-                        ForEach(playerPosition.injuryPoints(for: SelectedVision), id: \.self) { point in
-                            NeonPulseIndicator()
-                                .offset(x: point.x, y: point.y)
-                        }
+                        Text("Áreas afetadas")
+                            //.font(.system(size: 14))
+                            .font(.footnote)
+                            .foregroundColor(.gray)
                     }
-                    .frame(width: 200, height: 300)
-                    .padding(.vertical, 22)
-                    .frame(maxWidth: .infinity)
-                }
-                .background(Color.bodyBox)
-                .cornerRadius(6)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 6)
-                        .stroke(Color.borderBodyBox, lineWidth: 3)
-                )
-                .padding(.horizontal)
-                
-                // Legenda
-                HStack(spacing: 6) {
-                    Image(systemName: "circle.fill")
-                        //.font(.system(size: 18))
-                        .font(.footnote)
-                        .foregroundStyle(Color.red.opacity(0.7))
-                    Text("Áreas afetadas")
-                        //.font(.system(size: 14))
-                        .font(.footnote)
-                        .foregroundColor(.gray)
-                }
-                .padding(.leading, 16)
-                .padding(.top, -8)
-
-                // Textos informativos
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("Áreas afetadas na posição: \(playerPosition.rawValue)")
-                        .font(.title3.weight(.bold))
-                        .foregroundStyle(Color("TitleBlue"))
+                    .padding(.leading, 16)
+                    .padding(.top, -8)
                     
-                    Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
-                        //.font(.system(size: 16))
-                        .font(.body)
-                        .lineSpacing(4)
-                        .foregroundColor(Color("TextColorAffected"))
-                        .multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .padding(.horizontal)
-                .font(.system(size: 16, weight: .semibold, design: .rounded))
-                
-                // Sugestão de descanso
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Sugestão de horas de descanso")
-                        //.font(.system(size: 22, weight: .bold))
-                        .font(.title3.weight(.bold))
-                        .foregroundStyle(Color("TitleBlue"))
+                    // Textos informativos
+                    VStack(alignment: .leading, spacing: 10) {
+                        
+                        Text("Áreas afetadas na posição: \(playerPosition.rawValue)")
+                            .font(.title3.weight(.bold))
+                            .foregroundStyle(Color("TitleBlue"))
+                        
+                        Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
+                            //.font(.system(size: 16))
+                            .font(.body)
+                            .lineSpacing(4)
+                            .foregroundColor(Color("TextColorAffected"))
+                            .multilineTextAlignment(.leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .padding(.horizontal)
+                    .font(.system(size: 16, weight: .semibold, design: .rounded))
                     
-                    RecoveryTimeCard(hours: 72)
+                    // Sugestão de descanso
+                    VStack(alignment: .leading, spacing: 12) {
+                        
+                        Text("Sugestão de horas de descanso")
+                            //.font(.system(size: 22, weight: .bold))
+                            .font(.title3.weight(.bold))
+                            .foregroundStyle(Color("TitleBlue"))
+                        
+                        RecoveryTimeCard(hours: 72)
+                    }
+                    .padding(.horizontal)
+                    
+                    // Botão
+                    PrimaryButton(title: "Nova Simulação") {
+                        print("Ação do botão")
+                    }
+                    .padding(.horizontal, 40)
+                    .padding(.top, 10)
+                    .padding(.bottom, 30)
                 }
-                .padding(.horizontal)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            
+            if showWarning {
                 
-                // Botão
-                PrimaryButton(title: "Nova Simulação") {
-                    print("Ação do botão")
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                
+                WarningPopUpCard(
+                    title: "Aviso Importante",
+                    message: "Este aplicativo tem caráter instrutivo e não substitui avaliação profissional.",
+                    buttonTitle: "Entendi"
+                ) {
+                    withAnimation {
+                        showWarning = false
+                    }
                 }
-                .padding(.horizontal, 40)
-                .padding(.top, 10)
-                .padding(.bottom, 30)
+                .transition(.scale)
             }
         }
-        .background(Color.background)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
