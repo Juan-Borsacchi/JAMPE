@@ -13,7 +13,6 @@ enum VisionBody: String, CaseIterable, Identifiable {
     var id: String { self.rawValue }
 }
 
-// Modelo para segurar as coordenadas exatas de cada bolinha
 struct InjuryPoint: Hashable {
     let x: CGFloat
     let y: CGFloat
@@ -26,7 +25,6 @@ enum PlayerPosition: String, CaseIterable {
     case central = "Central"
     case levantador = "Levantador"
     
-    // Retorna os pontos vermelhos dependendo da Posição e se é Frente/Costas
     func injuryPoints(for vision: VisionBody) -> [InjuryPoint] {
         switch self {
         case .oposto, .ponteiro:
@@ -49,7 +47,6 @@ enum PlayerPosition: String, CaseIterable {
                     InjuryPoint(x: 16, y: 122), // Tornozelo
                     InjuryPoint(x: 30, y: -90)  // Ombro de ataque
                 ]
-                
             }
             
         case .libero, .central:
@@ -142,6 +139,7 @@ struct TelaSimulacao: View {
     let playerPosition: PlayerPosition
     
     @State private var SelectedVision: VisionBody = .front
+    @State private var showWarning = true
     
     let isIpad = UIDevice.current.userInterfaceIdiom == .pad
     
@@ -155,28 +153,59 @@ struct TelaSimulacao: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.top, 20)
                 
-                // Caixinha com o corpo
-                VStack(spacing: 0) {
-                    HStack {
-                        Spacer()
-                        Picker("", selection: $SelectedVision) {
-                            ForEach(VisionBody.allCases) { option in
-                                Text(option.rawValue).tag(option)
+                VStack(alignment: .leading, spacing: 20) {
+                    
+                    Text("Resultado da simulação")
+                        .foregroundStyle(Color("TitleBlue"))
+                        .font(.system(size: 28, weight: .bold))
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.top, 20)
+                    
+                    VStack(spacing: 0) {
+                        
+                        HStack {
+                            Spacer()
+                            
+                            Picker("", selection: $SelectedVision) {
+                                ForEach(VisionBody.allCases) { option in
+                                    Text(option.rawValue).tag(option)
+                                }
+                            }
+                            .pickerStyle(.segmented)
+                            .frame(width: 150)
+                            .padding([.top, .trailing], 16)
+                            
+                            Spacer()
+                        }
+                        
+                        ZStack {
+                            
+                            Image(SelectedVision == .front ? "corpo_frente" : "corpo_costas")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 200, height: 300)
+                                .opacity(0.4)
+                            
+                            ForEach(playerPosition.injuryPoints(for: SelectedVision), id: \.self) { point in
+                                Circle()
+                                    .fill(Color.red.opacity(0.6))
+                                    .frame(width: 16, height: 16)
+                                    .offset(x: point.x, y: point.y)
                             }
                         }
-                        .pickerStyle(.segmented)
-                        .frame(width: 150)
-                        .padding([.top, .trailing], 16)
-                        Spacer()
+                        .frame(width: 200, height: 300)
+                        .padding(.vertical, 22)
+                        .frame(maxWidth: .infinity)
                     }
+                    .background(Color.bodyBox)
+                    .cornerRadius(6)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 6)
+                            .stroke(Color.borderBodyBox, lineWidth: 3)
+                    )
+                    .padding(.horizontal)
                     
-                    // Ajuste preciso do posicionamento das bolinhas
-                    ZStack {
-                        Image(SelectedVision == .front ? "corpo_frente" : "corpo_costas")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 200, height: 300) // Frame direto no elemento ancora
-                            .opacity(0.4)
+                    HStack(spacing: 10) {
                         
                         // Renderização das bolinhas dinâmicas
                         ForEach(playerPosition.injuryPoints(for: SelectedVision), id: \.self) { point in
@@ -234,26 +263,47 @@ struct TelaSimulacao: View {
                         .font(.title3.weight(.bold))
                         .foregroundStyle(Color("TitleBlue"))
                     
-                    RecoveryTimeCard(hours: 72)
+                    VStack(alignment: .leading, spacing: 12) {
+                        
+                        Text("Sugestão de horas de descanso")
+                            .font(.system(size: 22, weight: .bold))
+                            .foregroundStyle(Color("TitleBlue"))
+                        
+                        RecoveryTimeCard(hours: 72)
+                    }
+                    .padding(.horizontal)
+                    
+                    PrimaryButton(title: "Nova Simulação") {
+                        print("Ação do botão")
+                    }
+                    .padding(.horizontal, 40)
+                    .padding(.top, 10)
+                    .padding(.bottom, 30)
                 }
-                .padding(.horizontal)
+            }
+            .background(Color.background)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            
+            if showWarning {
                 
-                // Botão
-                PrimaryButton(title: "Nova Simulação") {
-                    print("Ação do botão")
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                
+                WarningPopUpCard(
+                    title: "Aviso Importante",
+                    message: "Este aplicativo tem caráter educativo e não substitui avaliação profissional.",
+                    buttonTitle: "Entendi"
+                ) {
+                    withAnimation {
+                        showWarning = false
+                    }
                 }
-                .padding(.horizontal, 40)
-                .padding(.top, 10)
-                .padding(.bottom, 30)
+                .transition(.scale)
             }
         }
-        .background(Color.background)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    } 
+    }
 }
 
 #Preview {
     TelaSimulacao(playerPosition: .oposto)
 }
-
-
