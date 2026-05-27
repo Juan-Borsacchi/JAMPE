@@ -165,11 +165,11 @@ struct TelaSimulacao: View {
     private var intensityStatus: (color: Color, text: String) {
         let score = calculatedLoadScore
         if score <= 180 {
-            return (Color.yellow, "Áreas levemente afetadas")
+            return (Color.borgScale5, "Áreas levemente afetadas")
         } else if score <= 630 {
-            return (Color.orange, "Áreas moderadamente afetadas")
+            return (Color.borgScale9, "Áreas moderadamente afetadas")
         } else {
-            return (Color.red, "Áreas intensamente afetadas")
+            return (Color.borgScale10, "Áreas intensamente afetadas")
         }
     }
     
