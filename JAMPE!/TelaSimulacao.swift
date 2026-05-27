@@ -91,6 +91,25 @@ enum PlayerPosition: String, CaseIterable {
             
         }
     }
+    
+    var positionDescription: String {
+        switch self {
+        case .oposto:
+            return "As áreas com maior risco de lesão para os jogadores da posição Oposto são o ombro de ataque, os joelhos e os tornozelos. O alto volume de saltos e a potência necessária para os ataques geram forte impacto rotacional e sobrecarga excêntrica nas articulações."
+            
+        case .ponteiro:
+            return "As áreas com maior risco de lesão para os jogadores da posição Ponteiro são o ombro de ataque, os joelhos e os tornozelos. Por atuarem tanto na recepção quanto no ataque de ponta, esses atletas sofrem grande desgaste muscular pelo acúmulo de saltos e desacelerações bruscas."
+            
+        case .libero:
+            return "As áreas com maior risco de lesão para os jogadores da posição Líbero são os tornozelos, os punhos e os dedos. A exigência contínua por deslocamentos rápidos, defesas no chão e amortecimento de saques potentes sobrecarrega a região distal dos braços e as articulações inferiores."
+            
+        case .central:
+            return "As áreas com maior risco de lesão para os jogadores da posição Central são os tornozelos, os punhos e os dedos. O bloqueio dinâmico exige constantes saltos verticais e contato direto com a bola em alta velocidade, aumentando o risco de entorses e traumas nos dedos."
+            
+        case .levantador:
+            return "As áreas com maior risco de lesão para os jogadores da posição Levantador são os punhos, os dedos e o ombro. Sendo o cérebro da equipe, o contato repetitivo e milimétrico para empurrar a bola exige muito da articulação das mãos, enquanto o ombro atua na sustentação dos movimentos altos."
+        }
+    }
 }
 
 // Componente isolado para criar as ondas vibrantes infinitas do sonar
@@ -133,6 +152,8 @@ struct NeonPulseIndicator: View {
         }
     }
 }
+
+
 
 struct TelaSimulacao: View {
     
@@ -216,9 +237,6 @@ struct TelaSimulacao: View {
                             Picker("", selection: $SelectedVision) {
                                 ForEach(VisionBody.allCases) { option in
                                     Text(option.rawValue).tag(option)
-                                        //.font(.caption)
-                                        //.font(isIpad ? .title.weight(.bold)  : .title3.weight(.bold))
-                                        .font(.system(size: 22))
                                 }
                             }
                             .pickerStyle(.segmented)
@@ -258,47 +276,26 @@ struct TelaSimulacao: View {
                     // Legenda dinamica
                     HStack(spacing: 6) {
                         Image(systemName: "circle.fill")
-                            //.font(.system(size: 18))
                             .font(.footnote)
                             .font(isIpad ? .largeTitle.weight(.bold) :.title.weight(.bold))
                             .foregroundStyle(intensityStatus.color)
                         
                         Text(intensityStatus.text)
-                            //.font(.system(size: 14))
-                            //.font(.footnote)
                             .font(isIpad ? .title3  : .footnote)
                             .foregroundColor(.gray)
                     }
                     .padding(.leading, isIpad ? 32 : 16)
                     .padding(.top, -8)
                     
-                    /*
-                     .largeTitle    // título bem grande
-                     .title         // título grande
-                     .title2        // título médio-grande
-                     .title3        // título menor
-
-                     .headline      // destaque
-                     .body          // texto padrão
-                     .callout       // texto um pouco menor que body
-                     .subheadline   // subtítulo pequeno
-
-                     .footnote      // nota pequena
-                     .caption       // legenda
-                     .caption2      // legenda ainda menor
-                     */
                     
                     // Textos informativos
                     VStack(alignment: .leading, spacing: 10) {
                         
                         Text("Áreas afetadas na posição: \(playerPosition.rawValue)")
                             .font(isIpad ? .title.weight(.bold)  : .title3.weight(.bold))
-                            //.font(.title3.weight(.bold))
                             .foregroundStyle(Color("TitleBlue"))
                         
-                        Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
-                            //.font(.system(size: 16))
-                            //.font(.body)
+                        Text(playerPosition.positionDescription)
                             .font(isIpad ? .title2 : .body)
                             .lineSpacing(4)
                             .foregroundColor(Color("TextColorAffected"))
@@ -312,17 +309,13 @@ struct TelaSimulacao: View {
                     VStack(alignment: .leading, spacing: 12) {
                         
                         Text("Sugestão de horas de descanso")
-                            //.font(.system(size: 22, weight: .bold))
-                            //.font(.title3.weight(.bold))
                             .font(isIpad ? .title.weight(.bold)  : .title3.weight(.bold))
                             .foregroundStyle(Color("TitleBlue"))
                         
                         RecoveryTimeCard(hours: recoveryHoursSuggestion)
                     }
                     .padding(.horizontal, isIpad ? 32 : 16)
-                    
-                    
-                    //isIpad ? Spacer()Spacer() : Spacer()
+        
                     
                     isIpad
                     ? AnyView(HStack {
