@@ -47,7 +47,6 @@ struct TrainingView: View {
     let isIpad = UIDevice.current.userInterfaceIdiom == .pad
     
     var body: some View {
-        NavigationStack{
             ScrollView {
                 VStack(spacing: 20){
                         Text("Sobre o Treino")
@@ -83,6 +82,7 @@ struct TrainingView: View {
                     
                     BorgScale(selectedIntensity: $selectedIntensity)
                         .padding(.horizontal, isIpad ? 16 : 0)
+                        .padding(.vertical)
                     
                     BorgScaleInfoCard()
                         .padding(.horizontal, isIpad ? 32 : 16)
@@ -107,7 +107,6 @@ struct TrainingView: View {
                 }
             }
         }
-    }
 }
 
 #Preview {

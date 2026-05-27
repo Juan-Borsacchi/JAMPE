@@ -35,7 +35,6 @@ struct VoleiView: View {
     let isIpad = UIDevice.current.userInterfaceIdiom == .pad
     
     var body: some View {
-        NavigationStack{
             ScrollView{
                 Text("Sobre o Volei")
                     .font(isIpad ? .largeTitle.weight(.bold) :.title.weight(.bold))
@@ -102,7 +101,6 @@ struct VoleiView: View {
                         }
                     }
                 }
-            }
             
         }
         .navigationDestination(isPresented: $navigateNext) {
