@@ -82,6 +82,7 @@ struct TrainingView: View {
                     
                     BorgScale(selectedIntensity: $selectedIntensity)
                         .padding(.horizontal, isIpad ? 16 : 0)
+                        .padding(.vertical)
                     
                     BorgScaleInfoCard()
                         .padding(.horizontal, isIpad ? 32 : 16)

@@ -19,7 +19,7 @@ struct BorgScaleText: View {
             ForEach(texts, id: \.self) { text in
                 VStack(alignment: .center) {
                     Text(text)
-                        .font(isIpad ? .title : .caption)
+                        .font(isIpad ? .title2 : .caption)
                         .multilineTextAlignment(.center)
                         .frame(maxWidth: isIpad ? 350 : 150)
                 }
