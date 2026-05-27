@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BorgScale: View {
     
-    @State private var selectedIntensity = ""
+    @Binding var selectedIntensity: String
     
     let isIpad = UIDevice.current.userInterfaceIdiom == .pad
     
@@ -37,5 +37,5 @@ struct BorgScale: View {
 }
 
 #Preview {
-    BorgScale()
+    BorgScale(selectedIntensity: .constant(""))
 }
