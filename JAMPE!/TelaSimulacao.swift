@@ -165,11 +165,11 @@ struct TelaSimulacao: View {
     private var intensityStatus: (color: Color, text: String) {
         let score = calculatedLoadScore
         if score <= 180 {
-            return (Color.yellow, "áreas levemente afetadas")
+            return (Color.yellow, "Áreas levemente afetadas")
         } else if score <= 630 {
-            return (Color.orange, "áreas moderadamente afetadas")
+            return (Color.orange, "Áreas moderadamente afetadas")
         } else {
-            return (Color.red, "áreas intensamente afetadas")
+            return (Color.red, "Áreas intensamente afetadas")
         }
     }
     
@@ -257,21 +257,40 @@ struct TelaSimulacao: View {
                         Image(systemName: "circle.fill")
                             //.font(.system(size: 18))
                             .font(.footnote)
+                            .font(isIpad ? .largeTitle.weight(.bold) :.title.weight(.bold))
                             .foregroundStyle(intensityStatus.color)
                         
                         Text(intensityStatus.text)
                             //.font(.system(size: 14))
-                            .font(.footnote)
+                            //.font(.footnote)
+                            .font(isIpad ? .callout  : .footnote)
                             .foregroundColor(.gray)
                     }
                     .padding(.leading, 16)
                     .padding(.top, -8)
                     
+                    /*
+                     .largeTitle    // título bem grande
+                     .title         // título grande
+                     .title2        // título médio-grande
+                     .title3        // título menor
+
+                     .headline      // destaque
+                     .body          // texto padrão
+                     .callout       // texto um pouco menor que body
+                     .subheadline   // subtítulo pequeno
+
+                     .footnote      // nota pequena
+                     .caption       // legenda
+                     .caption2      // legenda ainda menor
+                     */
+                    
                     // Textos informativos
                     VStack(alignment: .leading, spacing: 10) {
                         
                         Text("Áreas afetadas na posição: \(playerPosition.rawValue)")
-                            .font(.title3.weight(.bold))
+                            .font(isIpad ? .title.weight(.bold)  : .title3.weight(.bold))
+                            //.font(.title3.weight(.bold))
                             .foregroundStyle(Color("TitleBlue"))
                         
                         Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
@@ -290,7 +309,8 @@ struct TelaSimulacao: View {
                         
                         Text("Sugestão de horas de descanso")
                             //.font(.system(size: 22, weight: .bold))
-                            .font(.title3.weight(.bold))
+                            //.font(.title3.weight(.bold))
+                            .font(isIpad ? .title.weight(.bold)  : .title3.weight(.bold))
                             .foregroundStyle(Color("TitleBlue"))
                         
                         RecoveryTimeCard(hours: recoveryHoursSuggestion)
