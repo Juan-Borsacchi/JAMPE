@@ -16,8 +16,8 @@ struct WarningPopUp: View {
                 .ignoresSafeArea()
             
             WarningPopUpCard(
-                title: "Aviso Importante",
-                message: "Este aplicativo tem caráter instrutivo e não substitui avaliação profissional.",
+                title: "Importante",
+                message: "As informações apresentadas são apenas simulações. Para uma avaliação mais precisa, consulte um profissional",
                 buttonTitle: "Entendi"
             ) {
                 
