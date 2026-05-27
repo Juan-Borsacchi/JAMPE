@@ -40,7 +40,7 @@ struct ButtonSelect: View {
                         }
                         Text(option)
                             .font(.system(isIpad ? .title : .callout , weight: .regular))
-                            .foregroundColor(option == selected ? (isBorg(option) ? .black : .white) : .border)
+                            .foregroundColor(option == selected ? (isBorg(option) ? resolveTextColor(for: option) : .white) : .border)
                     }
                     .frame(maxWidth: .infinity,minHeight: height, maxHeight: height, alignment: .leading)
                     .padding(.horizontal, 8)
@@ -73,6 +73,19 @@ struct ButtonSelect: View {
             // Se NÃO for Borg (ou seja, se for as posições do Vôlei), retorna o fundo da cor abaixo
             return Color.titleBlue
         }
+    
+    private func resolveTextColor(for option: String) -> Color {
+        // Se o item NÃO estiver selecionado, mantém a cor da borda/desativado
+        guard option == selected else { return .border }
+        
+        // Se estiver selecionado e for da escala Borg, aplica a regra de contraste
+        if let intensityCase = borgIntensity(rawValue: option) {
+            return intensityCase.textColor
+        }
+        
+        // Se for Vôlei (ou outro), mantém o padrão branco sobre o fundo azul
+        return .white
+    }
 }
 
 

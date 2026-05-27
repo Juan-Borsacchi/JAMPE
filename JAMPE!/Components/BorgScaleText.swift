@@ -10,6 +10,8 @@ import SwiftUI
 struct BorgScaleText: View {
     @State var texts: [String]
     
+    @Environment(\.colorScheme) var colorScheme
+    
     let isIpad = UIDevice.current.userInterfaceIdiom == .pad
     
     var body: some View {
@@ -19,14 +21,13 @@ struct BorgScaleText: View {
                     Text(text)
                         .font(isIpad ? .title : .caption)
                         .multilineTextAlignment(.center)
-                        .foregroundColor(Color(red: 0.3, green: 0.3, blue: 0.3))
                         .frame(maxWidth: isIpad ? 350 : 150)
                 }
                 .frame(maxWidth: isIpad ? 450 : 110)
                 .frame(height: 126)
                 .overlay(alignment: .top) {
                     Rectangle()
-                        .fill(Color.black.opacity(0.1))
+                        .fill(colorScheme == .dark ? Color.white.opacity(0.4) : Color.black.opacity(0.1))
                         .frame(height: 1)
                 }
             }
@@ -34,7 +35,7 @@ struct BorgScaleText: View {
         .frame(height: 630)
         .overlay(alignment: .bottom) {
             Rectangle()
-                .fill(Color.black.opacity(0.1))
+                .fill(colorScheme == .dark ? Color.white.opacity(0.4) : Color.black.opacity(0.1))
                 .frame(height: 1)
         }
     }

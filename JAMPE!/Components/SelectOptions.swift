@@ -51,4 +51,12 @@ enum borgIntensity: String, CaseIterable {
                 return Color.borgScale10
             }
         }
+    var textColor: Color {
+            switch self {
+            case .extremamenteLeve, .muitoLeve, .bastanteLeve, .intenso, .muitoIntenso, .extremamenteIntenso:
+                return .white
+            default:
+                return .black 
+            }
+        }
 }

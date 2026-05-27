@@ -62,29 +62,30 @@ struct TrainingView: View {
                         .font(isIpad ? .title.weight(.bold) :.title2.weight(.bold))
                         .foregroundColor(.textBlue)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal)
+                        .padding(.horizontal, isIpad ? 32 : 16)
                     
                     TimePicker(hour: $hour, minute: $minute)
                         .padding(15)
                     //.background(in: .rect(cornerRadius: 10))
-                        .padding(.horizontal, 20)
+                        .padding(.horizontal)
                     
                     Text("Como você avaliaria o esforço físico durante seu treino?")
                         .font(isIpad ? .title.weight(.bold) :.title2.weight(.bold))
                         .foregroundColor(.textBlue)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal)
+                        .padding(.horizontal, isIpad ? 32 : 16)
                     
                     Text("Selecione apenas em uma intensidade, de acordo com a sensação percebida.")
                         .font(isIpad ? .title2 : .callout)
                         .foregroundColor(.gray)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal)
+                        .padding(.horizontal, isIpad ? 32 : 16)
                     
                     BorgScale(selectedIntensity: $selectedIntensity)
+                        .padding(.horizontal, isIpad ? 16 : 0)
                     
                     BorgScaleInfoCard()
-                        .padding(.horizontal)
+                        .padding(.horizontal, isIpad ? 32 : 16)
                     
                     PrimaryButton(title: "Simular") {
                         navigateNext = true
@@ -101,7 +102,6 @@ struct TrainingView: View {
 
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .padding(.horizontal, 16)
                 .onChange(of: [hour, minute]) { oldValues, newValues in
                     print("Tempo atualizado: \(newValues[0])h \(newValues[1])min")
                 }
