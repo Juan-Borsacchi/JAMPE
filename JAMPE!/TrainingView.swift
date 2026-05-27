@@ -12,7 +12,7 @@ struct TrainingView: View {
     
     let knowsVoleiBasics: Bool
     
-    @State private var selectedIntensity = ""
+    @State private var selectedIntensity: String = ""
     
     @State private var hour: Int = 0
     
@@ -21,6 +21,19 @@ struct TrainingView: View {
     @State private var navigateNext = false
     
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    
+    private var totalMinutes: Int {
+        return (hour * 60) + minute
+    }
+    
+    private var intensityValue: Int {
+        
+        if let intensityEnum = borgIntensity(rawValue: selectedIntensity) {
+            
+            return borgIntensity.allCases.firstIndex(of: intensityEnum) ?? 0
+        }
+        return 0
+    }
     
     private var textNext: Bool {
         switch dynamicTypeSize {
@@ -68,9 +81,10 @@ struct TrainingView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal)
                     
-                    BorgScale()
+                    BorgScale(selectedIntensity: $selectedIntensity)
                     
                     BorgScaleInfoCard()
+                        .padding(.horizontal)
                     
                     PrimaryButton(title: "Simular") {
                         navigateNext = true
@@ -78,10 +92,10 @@ struct TrainingView: View {
                     .padding(.horizontal)
                     .navigationDestination(isPresented: $navigateNext) {
                         TelaSimulacao(
-                                playerPosition: .levantador,
-                                borgScale: 6,
-                                durationMinutes: 90,
-                                dominaFundamentos: false
+                                    playerPosition: playerPosition,
+                                    borgScale: intensityValue,
+                                    durationMinutes: totalMinutes,
+                                    dominaFundamentos: knowsVoleiBasics
                             )
                     }
 
