@@ -54,7 +54,7 @@ struct VoleiView: View {
                     HStack{
                         Toggle("Ex. Manchete e Toque", isOn: $knowsVoleiBasics)
                             .tint(.titleBlue)
-                            .font(.callout)
+                            .font(isIpad ? .title2 : .callout)
                             .foregroundColor(.gray)
                     }.padding(.horizontal, 12)
                 }.padding(.horizontal, isIpad ? 32 : 16)
@@ -68,21 +68,22 @@ struct VoleiView: View {
                 
                 VStack{
                     Text("Qual sua posição em quadra?")
-                        .font(.title2.weight(.bold))
+                        .font(isIpad ? .title.weight(.bold) : .title2.weight(.bold))
                         .foregroundColor(.textBlue)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, isIpad ? 32 : 16)
-                        .padding(.top, 20)
-                        .padding(.bottom, 12)
+                        .padding(.top, isIpad ? 36 : 20)
+                        .padding(.bottom, isIpad ? 24 : 12)
                     
                     ButtonSelect(options: voleiPositions.allCases.map { $0.rawValue }, selected: $position, height: 45)
                         .padding(.horizontal, isIpad ? 32 : 16)
                 }
                 
                 Spacer()
-                    .frame(height: 32)
+                    .frame(height: isIpad ? 232 : 32)
     
                 VStack {
+                    
                     Group{
                         if textNext {
                             PrimaryButton(title: "Próxima Etapa") {
