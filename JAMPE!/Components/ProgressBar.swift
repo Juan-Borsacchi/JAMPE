@@ -38,7 +38,7 @@ struct ProgressBar: View {
                     .foregroundColor(progress <= 0.5 ? .gray : .titleBlue)
             }
         }
-        .padding(.horizontal, 16)
+        .padding(.horizontal, isIpad ? 32 : 16)
     }
     
     func progressWidth() -> CGFloat {
