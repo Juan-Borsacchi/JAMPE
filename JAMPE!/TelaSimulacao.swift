@@ -8,8 +8,8 @@
 import SwiftUI
 
 enum VisionBody: String, CaseIterable, Identifiable {
-    case front = "Frente"
-    case back = "Costas"
+    case right = "Destro"
+    case left = "Canhoto"
     
     var id: String { self.rawValue }
 }
@@ -32,7 +32,7 @@ enum PlayerPosition: String, CaseIterable {
         switch self {
         case .oposto, .ponteiro:
             // Joelho e Tornozelo e ombro de ataque
-            if vision == .front {
+            if vision == .right {
                 return [
                     InjuryPoint(x: -16, y: 60),  // Joelho
                     InjuryPoint(x: -16, y: 122), // Tornozelo
@@ -55,31 +55,19 @@ enum PlayerPosition: String, CaseIterable {
             
         case .libero, .central:
             // Tornozelo, Punho e Dedos
-            if vision == .front {
-                return [
-                    InjuryPoint(x: -16, y: 122), // Tornozelo
-                    InjuryPoint(x: -33, y: -10), // Punho
-                    InjuryPoint(x: -29, y: 10),   // Dedos
-                    
-                    InjuryPoint(x: 16, y: 122), // Tornozelo
-                    InjuryPoint(x: 33, y: -10), // Punho
-                    InjuryPoint(x: 29, y: 10)   // Dedos
-                ]
-            } else {
-                return [
-                    InjuryPoint(x: -16, y: 122), // Tornozelo
-                    InjuryPoint(x: -33, y: -10), // Punho
-                    InjuryPoint(x: -29, y: 10),   // Dedos
-                    
-                    InjuryPoint(x: 16, y: 122), // Tornozelo
-                    InjuryPoint(x: 33, y: -10), // Punho
-                    InjuryPoint(x: 29, y: 10)   // Dedos
-                ]
-           }
+            return [
+                InjuryPoint(x: -16, y: 122), // Tornozelo
+                InjuryPoint(x: -33, y: -10), // Punho
+                InjuryPoint(x: -29, y: 10),   // Dedos
+                InjuryPoint(x: 16, y: 122), // Tornozelo
+                InjuryPoint(x: 33, y: -10), // Punho
+                InjuryPoint(x: 29, y: 10)   // Dedos
+            ]
+        
             
         case .levantador:
             // Punho, Ombro e Dedos
-            if vision == .front{
+            if vision == .right {
                 return [
                     InjuryPoint(x: -33, y: -10), // Punho
                     InjuryPoint(x: 33, y: -10), // Punho
@@ -108,6 +96,8 @@ enum PlayerPosition: String, CaseIterable {
 // Componente isolado para criar as ondas vibrantes infinitas do sonar
 struct NeonPulseIndicator: View {
     
+    let color: Color
+    
     @State private var waveAnimation = false
     
     var body: some View {
@@ -117,7 +107,7 @@ struct NeonPulseIndicator: View {
             // Ondas externas (Efeito Sonar Vibrante)
             ForEach(0..<3) { index in
                 Circle()
-                    .stroke(Color.red.opacity(0.4), lineWidth: 1.5)
+                    .stroke(color.opacity(0.4), lineWidth: 1.5)
                     .frame(width: 50, height: 50)
                     .scaleEffect(waveAnimation ? 1.5 : 0.3)
                     .opacity(waveAnimation ? 0.0 : 0.9)
@@ -132,8 +122,11 @@ struct NeonPulseIndicator: View {
             // Núcleo central brilhante
             Image(systemName: "circle.fill")
                 .font(.system(size: 18))
-                .foregroundStyle(Color.red.opacity(0.6))
-                .shadow(color: .red, radius: 4)
+                //.foregroundStyle(Color.red.opacity(0.6))
+                //.shadow(color: .red, radius: 4)
+            
+                .foregroundStyle(color.opacity(0.6))
+                .shadow(color: color, radius: 4)
         }
         .onAppear {
             waveAnimation = true
@@ -145,10 +138,56 @@ struct TelaSimulacao: View {
     
     let playerPosition: PlayerPosition
     
-    @State private var SelectedVision: VisionBody = .front
+    // Novas propriedades necessárias vindas do formulário anterior
+    let borgScale: Int
+    let durationMinutes: Int
+    let dominaFundamentos: Bool // Controla o tempo dinâmico de descanso
+    
+    @State private var SelectedVision: VisionBody = .right
     @State private var showWarning = true
     
     let isIpad = UIDevice.current.userInterfaceIdiom == .pad
+    
+    // Cálculo da carga interna sRPE com os multiplicadores refinados
+    private var calculatedLoadScore: Double {
+        let multiplier: Double
+        switch borgScale {
+        case 1...4:  multiplier = 0.8
+        case 5...7:  multiplier = 1.0
+        case 8...9:  multiplier = 1.2 // Peso ligeiramente aumentado para intensidades exponenciais
+        case 10:     multiplier = 1.4
+        default:     multiplier = 1.0
+        }
+        return Double(borgScale * durationMinutes) * multiplier
+    }
+    
+    // Tupla para o gerenciamento dinâmico e síncrono da legenda e pontos do sonar
+    private var intensityStatus: (color: Color, text: String) {
+        let score = calculatedLoadScore
+        if score <= 180 {
+            return (Color.yellow, "áreas levemente afetadas")
+        } else if score <= 630 {
+            return (Color.orange, "áreas moderadamente afetadas")
+        } else {
+            return (Color.red, "áreas intensamente afetadas")
+        }
+    }
+    
+    // Mapeia o exato cruzamento da Faixa de Treino + Domínio Técnico do Atleta
+    private var recoveryHoursSuggestion: Int {
+        let score = calculatedLoadScore
+        
+        if score <= 180 {
+            // Faixa Leve
+            return dominaFundamentos ? 6 : 24
+        } else if score <= 630 {
+            // Faixa Moderada
+            return dominaFundamentos ? 24 : 48
+        } else {
+            // Faixa Intensa
+            return dominaFundamentos ? 48 : 72
+        }
+    }
     
     var body: some View {
         
@@ -189,7 +228,7 @@ struct TelaSimulacao: View {
                         // Ajuste preciso do posicionamento das bolinhas
                         ZStack {
                             
-                            Image(SelectedVision == .front ? "corpo_frente" : "corpo_costas")
+                            Image("corpo_frente")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 200, height: 300) // Frame direto no elemento ancora
@@ -197,7 +236,7 @@ struct TelaSimulacao: View {
                             
                             // Renderização das bolinhas dinâmicas
                             ForEach(playerPosition.injuryPoints(for: SelectedVision), id: \.self) { point in
-                                NeonPulseIndicator()
+                                NeonPulseIndicator(color: intensityStatus.color)
                                     .offset(x: point.x, y: point.y)
                             }
                         }
@@ -213,14 +252,14 @@ struct TelaSimulacao: View {
                     )
                     .padding(.horizontal)
                     
-                    // Legenda
+                    // Legenda dinamica
                     HStack(spacing: 6) {
                         Image(systemName: "circle.fill")
                             //.font(.system(size: 18))
                             .font(.footnote)
-                            .foregroundStyle(Color.red.opacity(0.7))
+                            .foregroundStyle(intensityStatus.color)
                         
-                        Text("Áreas afetadas")
+                        Text(intensityStatus.text)
                             //.font(.system(size: 14))
                             .font(.footnote)
                             .foregroundColor(.gray)
@@ -254,7 +293,7 @@ struct TelaSimulacao: View {
                             .font(.title3.weight(.bold))
                             .foregroundStyle(Color("TitleBlue"))
                         
-                        RecoveryTimeCard(hours: 72)
+                        RecoveryTimeCard(hours: recoveryHoursSuggestion)
                     }
                     .padding(.horizontal)
                     
@@ -289,6 +328,29 @@ struct TelaSimulacao: View {
     }
 }
 
-#Preview {
-    TelaSimulacao(playerPosition: .oposto)
+#Preview("Faixa Leve - Amarelo") {
+    TelaSimulacao(
+        playerPosition: .levantador,
+        borgScale: 3,         // Intensidade Leve
+        durationMinutes: 45,  // Tempo curto
+        dominaFundamentos: true
+    )
+}
+
+#Preview("Faixa Moderada - Laranja") {
+    TelaSimulacao(
+        playerPosition: .ponteiro,
+        borgScale: 6,         // Intensidade Moderada
+        durationMinutes: 90,  // Treino padrão de 1h30
+        dominaFundamentos: true
+    )
+}
+
+#Preview("Faixa Intensa - Vermelho") {
+    TelaSimulacao(
+        playerPosition: .central,
+        borgScale: 9,          // Intensidade Muito Forte
+        durationMinutes: 120,  // Treino longo de 2h
+        dominaFundamentos: false
+    )
 }
