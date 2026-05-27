@@ -30,7 +30,7 @@ struct RecoveryTimeCard: View {
 
             Spacer()
         }
-        .padding(.horizontal, 4)
+        .padding(.horizontal, isIpad ? 20 : 4)
         .frame(maxWidth: .infinity)
         .frame(height: isIpad ? 240 : 139 )
         .background(Color("RestBlue"))

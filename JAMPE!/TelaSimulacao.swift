@@ -165,11 +165,11 @@ struct TelaSimulacao: View {
     private var intensityStatus: (color: Color, text: String) {
         let score = calculatedLoadScore
         if score <= 180 {
-            return (Color.yellow, "Áreas levemente afetadas")
+            return (Color.borgScale5, "Áreas levemente afetadas")
         } else if score <= 630 {
-            return (Color.orange, "Áreas moderadamente afetadas")
+            return (Color.borgScale9, "Áreas moderadamente afetadas")
         } else {
-            return (Color.red, "Áreas intensamente afetadas")
+            return (Color.borgScale10, "Áreas intensamente afetadas")
         }
     }
     
@@ -216,6 +216,9 @@ struct TelaSimulacao: View {
                             Picker("", selection: $SelectedVision) {
                                 ForEach(VisionBody.allCases) { option in
                                     Text(option.rawValue).tag(option)
+                                        //.font(.caption)
+                                        //.font(isIpad ? .title.weight(.bold)  : .title3.weight(.bold))
+                                        .font(.system(size: 22))
                                 }
                             }
                             .pickerStyle(.segmented)
@@ -250,7 +253,7 @@ struct TelaSimulacao: View {
                         RoundedRectangle(cornerRadius: 6)
                             .stroke(Color.borderBodyBox, lineWidth: 3)
                     )
-                    .padding(.horizontal)
+                    .padding(.horizontal, isIpad ? 32 : 16)
                     
                     // Legenda dinamica
                     HStack(spacing: 6) {
@@ -263,10 +266,10 @@ struct TelaSimulacao: View {
                         Text(intensityStatus.text)
                             //.font(.system(size: 14))
                             //.font(.footnote)
-                            .font(isIpad ? .callout  : .footnote)
+                            .font(isIpad ? .title3  : .footnote)
                             .foregroundColor(.gray)
                     }
-                    .padding(.leading, 16)
+                    .padding(.leading, isIpad ? 32 : 16)
                     .padding(.top, -8)
                     
                     /*
@@ -295,13 +298,14 @@ struct TelaSimulacao: View {
                         
                         Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
                             //.font(.system(size: 16))
-                            .font(.body)
+                            //.font(.body)
+                            .font(isIpad ? .title2 : .body)
                             .lineSpacing(4)
                             .foregroundColor(Color("TextColorAffected"))
                             .multilineTextAlignment(.leading)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .padding(.horizontal)
+                    .padding(.horizontal, isIpad ? 32 : 16)
                     .font(.system(size: 16, weight: .semibold, design: .rounded))
                     
                     // Sugestão de descanso
@@ -315,7 +319,17 @@ struct TelaSimulacao: View {
                         
                         RecoveryTimeCard(hours: recoveryHoursSuggestion)
                     }
-                    .padding(.horizontal)
+                    .padding(.horizontal, isIpad ? 32 : 16)
+                    
+                    
+                    //isIpad ? Spacer()Spacer() : Spacer()
+                    
+                    isIpad
+                    ? AnyView(HStack {
+                        Spacer()
+                        Spacer()
+                    })
+                    : AnyView(Spacer())
                     
                     // Botão
                     PrimaryButton(title: "Nova Simulação") {
