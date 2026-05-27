@@ -47,7 +47,7 @@ struct VoleiView: View {
                 
                 VStack{
                     Text("Você domina os fundamentos do vôlei, considerando teoria e prática?")
-                        .font(.title2.weight(.bold))
+                        .font(isIpad ? .title.weight(.bold) : .title2.weight(.bold))
                         .foregroundColor(.textBlue)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.bottom, 16)
@@ -57,26 +57,26 @@ struct VoleiView: View {
                             .font(.callout)
                             .foregroundColor(.gray)
                     }.padding(.horizontal, 12)
-                }.padding(.horizontal, 16)
+                }.padding(.horizontal, isIpad ? 32 : 16)
                     .padding(.top, 28)
-                    .padding(.bottom, 20)
+                    .padding(.bottom, isIpad ? 36 : 20)
                 
                 Rectangle()
                     .fill(Color.gray.opacity(0.3))
                     .frame(height: 1)
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, isIpad ? 32 : 16)
                 
                 VStack{
                     Text("Qual sua posição em quadra?")
                         .font(.title2.weight(.bold))
                         .foregroundColor(.textBlue)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, 16)
+                        .padding(.horizontal, isIpad ? 32 : 16)
                         .padding(.top, 20)
                         .padding(.bottom, 12)
                     
                     ButtonSelect(options: voleiPositions.allCases.map { $0.rawValue }, selected: $position, height: 45)
-                        .padding(.horizontal, 16)
+                        .padding(.horizontal, isIpad ? 32 : 16)
                 }
                 
                 Spacer()
