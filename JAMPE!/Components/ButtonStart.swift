@@ -20,7 +20,7 @@ struct PrimaryButton: View {
             action()
         } label: {
             Text(title)
-                .font(isIpad ? .largeTitle.weight(.semibold) : .title.weight(.semibold))
+                .font(isIpad ? .title.weight(.semibold) : .title2.weight(.semibold))
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .frame(height: isIpad ? 80 : 60)

@@ -9,15 +9,15 @@ import SwiftUI
 
 struct VoleiView: View {
     
+    @Binding var path: [Destination]
+    
     @State private var position = ""
     @State private var knowsVoleiBasics = false
     
-    @State private var navigateNext = false
+    // Propriedade de estado para controlar a exibição do aviso
+    @State private var showWarning = false
     
     private var selectedPlayerPosition: PlayerPosition? {
-        if position == voleiPositions.ponta.rawValue {
-            return .ponteiro
-        }
         return PlayerPosition(rawValue: position)
     }
     
@@ -35,37 +35,40 @@ struct VoleiView: View {
     let isIpad = UIDevice.current.userInterfaceIdiom == .pad
     
     var body: some View {
-            ScrollView{
+        ZStack { // O ZStack permite sobrepor o aviso perfeitamente na tela inteira
+            ScrollView {
                 Text("Sobre o Volei")
-                    .font(isIpad ? .largeTitle.weight(.bold) :.title.weight(.bold))
+                    .font(isIpad ? .largeTitle.weight(.bold) : .title.weight(.bold))
                     .foregroundStyle(Color.titleBlue)
                     .multilineTextAlignment(.center)
                     .minimumScaleFactor(0.8)
                 
                 ProgressBar(progress: 0.5)
                 
-                VStack{
+                VStack {
                     Text("Você domina os fundamentos do vôlei, considerando teoria e prática?")
                         .font(isIpad ? .title.weight(.bold) : .title2.weight(.bold))
                         .foregroundColor(.textBlue)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.bottom, 16)
-                    HStack{
+                    HStack {
                         Toggle("Ex. Manchete e Toque", isOn: $knowsVoleiBasics)
                             .tint(.titleBlue)
                             .font(isIpad ? .title2 : .callout)
                             .foregroundColor(.gray)
-                    }.padding(.horizontal, 12)
-                }.padding(.horizontal, isIpad ? 32 : 16)
-                    .padding(.top, 28)
-                    .padding(.bottom, isIpad ? 36 : 20)
+                    }
+                    .padding(.horizontal, 12)
+                }
+                .padding(.horizontal, isIpad ? 32 : 16)
+                .padding(.top, 28)
+                .padding(.bottom, isIpad ? 36 : 20)
                 
                 Rectangle()
                     .fill(Color.gray.opacity(0.3))
                     .frame(height: 1)
                     .padding(.horizontal, isIpad ? 32 : 16)
                 
-                VStack{
+                VStack {
                     Text("Qual sua posição em quadra?")
                         .font(isIpad ? .title.weight(.bold) : .title2.weight(.bold))
                         .foregroundColor(.textBlue)
@@ -74,44 +77,50 @@ struct VoleiView: View {
                         .padding(.top, isIpad ? 36 : 20)
                         .padding(.bottom, isIpad ? 24 : 12)
                     
-                    ButtonSelect(options: voleiPositions.allCases.map { $0.rawValue }, selected: $position, height: 45)
+                    ButtonSelect(options: PlayerPosition.allCases.map { $0.rawValue }, selected: $position, height: 45)
                         .padding(.horizontal, isIpad ? 32 : 16)
                 }
                 
                 Spacer()
                     .frame(height: isIpad ? 232 : 32)
-    
+                
                 VStack {
-                    
-                    Group{
-                        if textNext {
-                            PrimaryButton(title: "Próxima Etapa") {
-                                if selectedPlayerPosition != nil {
-                                    navigateNext = true
-                                }
+                    PrimaryButton(title: textNext ? "Próxima Etapa" : "Próximo") {
+                        // Validação: se o usuário escolheu uma posição, avança. Caso contrário, avisa.
+                        if let selectedPlayerPosition {
+                            withAnimation {
+                                path.append(.trainingView(playerPosition: selectedPlayerPosition, knowsVoleiBasics: knowsVoleiBasics))
                             }
-                            .padding(.horizontal, isIpad ? 92 : 52)
-                        }else{
-                            PrimaryButton(title: "Próximo") {
-                                if selectedPlayerPosition != nil {
-                                    navigateNext = true
-                                }
+                        } else {
+                            withAnimation {
+                                showWarning = true
                             }
-                            .padding(.horizontal, isIpad ? 92 : 52)
                         }
                     }
+                    .padding(.horizontal, isIpad ? 92 : 52)
                 }
+            }
             
-        }
-        .navigationDestination(isPresented: $navigateNext) {
-            if let selectedPlayerPosition {
-                TrainingView(playerPosition: selectedPlayerPosition, knowsVoleiBasics: knowsVoleiBasics)
+            // Camada do Pop-up de Aviso (exibida apenas se showWarning for verdadeiro)
+            if showWarning {
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                
+                WarningPopUpCard(
+                    title: "Atenção",
+                    message: isIpad ? "Por favor, selecione a sua posição em quadra antes de prosseguir para a próxima etapa." : "Por favor, selecione a sua posição antes de prosseguir para a próxima etapa.",
+                    buttonTitle: "Entendi"
+                ) {
+                    withAnimation {
+                        showWarning = false
+                    }
+                }
+                .transition(.scale)
             }
         }
     }
-    
 }
 
 #Preview {
-    VoleiView()
+    VoleiView(path: .constant([]))
 }

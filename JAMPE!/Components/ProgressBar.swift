@@ -39,12 +39,14 @@ struct ProgressBar: View {
             HStack {
                 Text("Etapa 1")
                     .font(isIpad ? .title2 : .subheadline)
+                    .bold(progress <= 0.5 ? true : false)
                     .foregroundColor(progress <= 0.5 ? .titleBlue : .gray)
                 
                 Spacer()
                 
                 Text("Etapa 2")
                     .font(isIpad ? .title2 : .subheadline)
+                    .bold(progress <= 0.5 ? false : true)
                     .foregroundColor(progress <= 0.5 ? .gray : .titleBlue)
             }
         }
