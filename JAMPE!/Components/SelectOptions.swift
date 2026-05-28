@@ -53,7 +53,7 @@ enum borgIntensity: String, CaseIterable {
         }
     var textColor: Color {
             switch self {
-            case .extremamenteLeve, .muitoLeve, .bastanteLeve, .intenso, .muitoIntenso, .extremamenteIntenso:
+            case .extremamenteLeve, .muitoLeve, .muitoIntenso, .extremamenteIntenso:
                 return .white
             default:
                 return .black 
