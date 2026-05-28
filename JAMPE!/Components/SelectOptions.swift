@@ -11,7 +11,7 @@ enum voleiPositions: String, CaseIterable {
     case levantador = "Levantador"
     case libero = "Líbero"
     case central = "Central"
-    case ponta = "Ponta"
+    case ponteiro = "Ponteiro"
     case oposto = "Oposto"
 }
 

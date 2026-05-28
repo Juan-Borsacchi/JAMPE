@@ -40,7 +40,7 @@ struct WarningPopUpCard: View {
     
     var body: some View {
         
-        VStack(spacing: isIpad ? 34 : 22) {
+        VStack(spacing: isIpad ? 36 : 24) {
             
             Image(systemName: "exclamationmark.circle.fill")
                 .font(.system(size: isIpad ? 86 : 52))
@@ -52,10 +52,10 @@ struct WarningPopUpCard: View {
                 .multilineTextAlignment(.center)
             
             Text(message)
-                .font(.system(size: isIpad ? 28 : 18, weight: .medium))
+                .font(.system(isIpad ? .title : .body, weight: .medium))
                 .foregroundStyle(Color("WarningText"))
                 .multilineTextAlignment(.center)
-                .padding(.horizontal, isIpad ? 18 : 8)
+                .padding(.horizontal, isIpad ? 16 : 8)
             
             Button {
                 

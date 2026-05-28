@@ -95,7 +95,7 @@ enum PlayerPosition: String, CaseIterable {
     var positionDescription: String {
         switch self {
         case .oposto:
-            return "As áreas com maior risco de lesão para os jogadores da posição Oposto são o ombro de ataque, os joelhos e os tornozelos. O alto volume de saltos e a potência necessária para os ataques geram forte impacto rotacional e sobrecarga excêntrica nas articulações."
+            return "As áreas com maior risco de lesão para os jogadores da posição Oposto são o ombro de ataque, os joelhos e os tornozelos. O alto volume de saltos e a potência para os ataques geram forte impacto rotacional e sobrecarga excêntrica nas articulações."
             
         case .ponteiro:
             return "As áreas com maior risco de lesão para os jogadores da posição Ponteiro são o ombro de ataque, os joelhos e os tornozelos. Por atuarem tanto na recepção quanto no ataque de ponta, esses atletas sofrem grande desgaste muscular pelo acúmulo de saltos e desacelerações bruscas."
@@ -164,8 +164,11 @@ struct SimulationView: View {
     let durationMinutes: Int
     let knowsVoleiBasics: Bool // Controla o tempo dinâmico de descanso
     
+    @Binding var path: [Destination]
+    
     @State private var SelectedVision: VisionBody = .right
     @State private var showWarning = true
+    @State private var pointsOpacity: Double = 1.0
     
     let isIpad = UIDevice.current.userInterfaceIdiom == .pad
     
@@ -173,10 +176,10 @@ struct SimulationView: View {
     private var calculatedLoadScore: Double {
         let multiplier: Double
         switch borgScale {
-        case 1...4:  multiplier = 0.8
-        case 5...7:  multiplier = 1.0
-        case 8...9:  multiplier = 1.2 // Peso ligeiramente aumentado para intensidades exponenciais
-        case 10:     multiplier = 1.4
+        case 0...3:  multiplier = 0.8
+        case 4...6:  multiplier = 1.0
+        case 7...8:  multiplier = 1.2 // Peso ligeiramente aumentado para intensidades exponenciais
+        case 9:     multiplier = 1.4
         default:     multiplier = 1.0
         }
         return Double(borgScale * durationMinutes) * multiplier
@@ -188,7 +191,7 @@ struct SimulationView: View {
         if score <= 180 {
             return (Color.borgScale5, "Áreas levemente afetadas")
         } else if score <= 630 {
-            return (Color.borgScale9, "Áreas moderadamente afetadas")
+            return (Color.borgScale8, "Áreas moderadamente afetadas")
         } else {
             return (Color.borgScale10, "Áreas intensamente afetadas")
         }
@@ -259,11 +262,18 @@ struct SimulationView: View {
                             ForEach(playerPosition.injuryPoints(for: SelectedVision), id: \.self) { point in
                                 NeonPulseIndicator(color: intensityStatus.color)
                                     .offset(x: point.x, y: point.y)
+                                    .opacity(pointsOpacity)
                             }
                         }
                         .frame(width: 200, height: 300)
                         .padding(.vertical, 22)
                         .frame(maxWidth: .infinity)
+                        .onChange(of: SelectedVision) { oldValue, newValue in
+                            pointsOpacity = 0.0
+                            withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
+                                pointsOpacity = 1.0
+                            }
+                        }
                     }
                     .background(Color.bodyBox)
                     .cornerRadius(6)
@@ -296,7 +306,7 @@ struct SimulationView: View {
                             .foregroundStyle(Color("TitleBlue"))
                         
                         Text(playerPosition.positionDescription)
-                            .font(isIpad ? .title2 : .body)
+                            .font(isIpad ? .title2 : .callout)
                             .lineSpacing(4)
                             .foregroundColor(Color("TextColorAffected"))
                             .multilineTextAlignment(.leading)
@@ -326,7 +336,9 @@ struct SimulationView: View {
                     
                     // Botão
                     PrimaryButton(title: "Nova Simulação") {
-                        print("Ação do botão")
+                        print("Limpando histórico e voltando tudo!")
+                                        
+                                        path.removeAll()
                     }
                     .padding(.horizontal, 40)
                     .padding(.top, 10)
@@ -360,16 +372,18 @@ struct SimulationView: View {
         playerPosition: .levantador,
         borgScale: 3,         // Intensidade Leve
         durationMinutes: 45,  // Tempo curto
-        knowsVoleiBasics: true
+        knowsVoleiBasics: true,
+        path: .constant([])
     )
 }
 
 #Preview("Faixa Moderada - Laranja") {
     SimulationView(
-        playerPosition: .ponteiro,
+        playerPosition: .levantador,
         borgScale: 6,         // Intensidade Moderada
         durationMinutes: 90,  // Treino padrão de 1h30
-        knowsVoleiBasics: true
+        knowsVoleiBasics: true,
+        path: .constant([])
     )
 }
 
@@ -378,6 +392,7 @@ struct SimulationView: View {
         playerPosition: .central,
         borgScale: 9,          // Intensidade Muito Forte
         durationMinutes: 120,  // Treino longo de 2h
-        knowsVoleiBasics: false
+        knowsVoleiBasics: false,
+        path: .constant([])
     )
 }
