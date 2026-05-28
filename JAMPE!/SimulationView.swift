@@ -155,14 +155,14 @@ struct NeonPulseIndicator: View {
 
 
 
-struct TelaSimulacao: View {
+struct SimulationView: View {
     
     let playerPosition: PlayerPosition
     
     // Novas propriedades necessárias vindas do formulário anterior
     let borgScale: Int
     let durationMinutes: Int
-    let dominaFundamentos: Bool // Controla o tempo dinâmico de descanso
+    let knowsVoleiBasics: Bool // Controla o tempo dinâmico de descanso
     
     @State private var SelectedVision: VisionBody = .right
     @State private var showWarning = true
@@ -200,13 +200,13 @@ struct TelaSimulacao: View {
         
         if score <= 180 {
             // Faixa Leve
-            return dominaFundamentos ? 6 : 24
+            return knowsVoleiBasics ? 6 : 24
         } else if score <= 630 {
             // Faixa Moderada
-            return dominaFundamentos ? 24 : 48
+            return knowsVoleiBasics ? 24 : 48
         } else {
             // Faixa Intensa
-            return dominaFundamentos ? 48 : 72
+            return knowsVoleiBasics ? 48 : 72
         }
     }
     
@@ -341,8 +341,8 @@ struct TelaSimulacao: View {
                     .ignoresSafeArea()
                 
                 WarningPopUpCard(
-                    title: "Aviso Importante",
-                    message: "Este aplicativo tem caráter instrutivo e não substitui avaliação profissional.",
+                    title: "Importante",
+                    message: "As informações apresentadas são apenas simulações. Para uma avaliação mais precisa, consulte um profissional",
                     buttonTitle: "Entendi"
                 ) {
                     withAnimation {
@@ -356,28 +356,28 @@ struct TelaSimulacao: View {
 }
 
 #Preview("Faixa Leve - Amarelo") {
-    TelaSimulacao(
+    SimulationView(
         playerPosition: .levantador,
         borgScale: 3,         // Intensidade Leve
         durationMinutes: 45,  // Tempo curto
-        dominaFundamentos: true
+        knowsVoleiBasics: true
     )
 }
 
 #Preview("Faixa Moderada - Laranja") {
-    TelaSimulacao(
+    SimulationView(
         playerPosition: .ponteiro,
         borgScale: 6,         // Intensidade Moderada
         durationMinutes: 90,  // Treino padrão de 1h30
-        dominaFundamentos: true
+        knowsVoleiBasics: true
     )
 }
 
 #Preview("Faixa Intensa - Vermelho") {
-    TelaSimulacao(
+    SimulationView(
         playerPosition: .central,
         borgScale: 9,          // Intensidade Muito Forte
         durationMinutes: 120,  // Treino longo de 2h
-        dominaFundamentos: false
+        knowsVoleiBasics: false
     )
 }
